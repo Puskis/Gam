@@ -24,13 +24,38 @@ var createCanvas = function() {
 
 var drawWorld = function() {
     context.fillStyle = "#A0A0A0";
-    for (var i = 0; i < 400; i = i + 20) {
-        for (var j = 0; j < 400; j = j + 20) {
-            context.setTransform(2, 0, -0.9, 0.7, 380, 280);
+    context.setTransform(1, 0, -1, 1, 0, 0);
+
+    for (var i = 400; i < 1100; i = i + 30) {
+        for (var j = 0; j < 400; j = j + 30) {           
             context.strokeStyle = "#DDDDDD";
-            context.strokeRect(i, j, 20, 20);
+            context.strokeRect(i, j, 30, 30);
         }
     }
+    context.setTransform(1, 0, 0, 1, 0, 0);
+
+    for (var i = 400; i < 1100; i = i + 30) {
+        for (var j = 0; j < 400; j = j + 30) {
+            context.strokeStyle = "#DADADA";
+            context.strokeRect(i, j, 30, 30);
+        }
+    }
+}();
+
+var ShowCoordinates = function() {
+    context.canvas.addEventListener("mousemove", function(event) {
+        context.clearRect(500, 0, 150, 60);
+        var boundingRect = context.canvas.getBoundingClientRect();
+        context.fillStyle = "black";
+        context.font = "12pt Monospace";
+        var lx = (event.clientX - boundingRect.left);
+        var ly = (event.clientY - boundingRect.top);
+        context.fillText("Ort: [" + lx + "," + ly + "]", 510, 20);
+        
+       // context.transform()
+
+        context.fillText("Axo: [" + (lx - ly) + "," + ly + "]", 510, 40);
+    });
 }();
 
 
