@@ -57,11 +57,14 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="HelperUI.js" />
     <Content Include="img\circle.png" />
     <Content Include="index.html" />
     <Content Include="main.js" />
-    <Content Include="packages.config" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="styles.css" />
+    <Content Include="styles.js" />
+    <Content Include="World.js" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />

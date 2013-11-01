@@ -1,5 +1,4 @@
 
-var context;
 
 var requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
@@ -12,50 +11,57 @@ var requestAnimFrame = (function () {
         };
 })();
 
-var createCanvas = function() {
-    var c = document.createElement("canvas");
-    c.width = 1200;
-    c.height = 600;
-    c.style = "border:1px solid #000000; margin-left: auto; margin-right: auto; display: block ";
-    document.body.appendChild(c);
+$().ready(function (context) {
 
-    context = c.getContext("2d");
-}();
+    var worldParams = {
+        width: 1200,
+        height: 600,
+        tilesVertical: 15,
+        tilesHorizontal: 25,
+        tileSize: 30,
+        marginLeft: 225,
+        marginTop: 100,
 
-var drawWorld = function() {
-    context.fillStyle = "#A0A0A0";
-    context.setTransform(1, 0, -1, 1, 0, 0);
+        axonometry: {
+            scaleX: 1,
+            skewX: 0,
+            skewY: -0.8,
+            scaleY: 0.7,
+            posX: 250,
+            posY: 100,
+            getAxonometricX: function (x, y) { return (Math.round(x * this.scaleX + y * this.skewY + this.posX)) },
+            getAxonometricY: function (x, y) { return (Math.round(x * this.skewX + y * this.scaleY + this.posY)) },
+            getCartesianX: function (x, y) {
+                return (Math.round(
+                    x * (this.scaleY / (this.scaleX * this.scaleY - this.skewX * this.skewY)) +
+                    y * (-(this.skewY / (this.scaleX * this.scaleY - this.skewX * this.skewY))) +
+                    (this.skewY * this.posY - this.scaleY * this.posX) / (this.scaleX * this.scaleY - this.skewX * this.skewY)))
+            },
+            getCartesianY: function (x, y) {
+                return (Math.round(
+                    x * (-(this.skewX))/(this.scaleX*this.scaleY-this.skewX*this.skewY)+
+                    y * (this.scaleX/(this.scaleX*this.scaleY-this.skewX*this.skewY))+
+                    (-(this.scaleX*this.posY-this.skewX*this.posX)/(this.scaleX*this.scaleY-this.skewX*this.skewY))))
+            }
+        },
 
-    for (var i = 400; i < 1100; i = i + 30) {
-        for (var j = 0; j < 400; j = j + 30) {           
-            context.strokeStyle = "#DDDDDD";
-            context.strokeRect(i, j, 30, 30);
+        getTileBoundaries: function () {
+
+            var rect = {
+                left: this.marginLeft,
+                right: this.marginLeft + (this.tileSize * this.tilesHorizontal),
+                top: this.marginTop,
+                bottom: this.marginTop + (this.tileSize * this.tilesVertical)
+            }
+            return rect;
         }
-    }
-    context.setTransform(1, 0, 0, 1, 0, 0);
+    };
 
-    for (var i = 400; i < 1100; i = i + 30) {
-        for (var j = 0; j < 400; j = j + 30) {
-            context.strokeStyle = "#DADADA";
-            context.strokeRect(i, j, 30, 30);
-        }
-    }
-}();
+    var context = createCanvas(worldParams.width, worldParams.height);
+    drawWorld(context, worldParams);
+    ShowCoordinates(context, worldParams);
 
-var ShowCoordinates = function() {
-    context.canvas.addEventListener("mousemove", function(event) {
-        context.clearRect(500, 0, 150, 60);
-        var boundingRect = context.canvas.getBoundingClientRect();
-        context.fillStyle = "black";
-        context.font = "12pt Monospace";
-        var lx = (event.clientX - boundingRect.left);
-        var ly = (event.clientY - boundingRect.top);
-        context.fillText("Ort: [" + lx + "," + ly + "]", 510, 20);
-        
-       // context.transform()
 
-        context.fillText("Axo: [" + (lx - ly) + "," + ly + "]", 510, 40);
-    });
-}();
+});
 
 
