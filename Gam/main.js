@@ -1,23 +1,30 @@
+var CONTEXT;
+var WORLD_PARAMS;
+var TIME;
 
+var animFrame = window.requestAnimationFrame ||
+           window.webkitRequestAnimationFrame ||
+           window.mozRequestAnimationFrame ||
+           window.oRequestAnimationFrame ||
+           window.msRequestAnimationFrame ||
+           null;
 
-var requestAnimFrame = (function () {
-    return window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.oRequestAnimationFrame ||
-        window.msRequestAnimationFrame ||
-        function (callback) {
-            window.setTimeout(callback, 1000 / 60);
-        };
-})();
+if (animFrame !== null) {
+    var animationLoop = function () {
+        mainLoop();
+        animFrame(animationLoop);
+    };
+} else {
+    setInterval(mainLoop, 1000/60);
+}
 
 $().ready(function (context) {
 
-    var worldParams = {
+    WORLD_PARAMS = {
         width: 1200,
         height: 600,
         tilesVertical: 15,
-        tilesHorizontal: 25,
+        tilesHorizontal: 27,
         tileSize: 30,
         marginLeft: 225,
         marginTop: 100,
@@ -25,9 +32,9 @@ $().ready(function (context) {
         axonometry: {
             scaleX: 1,
             skewX: 0,
-            skewY: -0.8,
+            skewY: -1,
             scaleY: 0.7,
-            posX: 250,
+            posX: 300,
             posY: 100,
             getAxonometricX: function (x, y) { return (Math.round(x * this.scaleX + y * this.skewY + this.posX)) },
             getAxonometricY: function (x, y) { return (Math.round(x * this.skewX + y * this.scaleY + this.posY)) },
@@ -57,11 +64,22 @@ $().ready(function (context) {
         }
     };
 
-    var context = createCanvas(worldParams.width, worldParams.height);
-    drawWorld(context, worldParams);
-    ShowCoordinates(context, worldParams);
+    CONTEXT = createCanvas(WORLD_PARAMS.width, WORLD_PARAMS.height);
+    TIME = Date.now();
+    animFrame(animationLoop);
 
+
+
+
+    //For debugging purposes
+    ShowCoordinates(CONTEXT, WORLD_PARAMS);
 
 });
 
-
+function mainLoop() {
+    var dt = Date.now() - TIME;
+    TIME = Date.now();
+    fpsWatch(dt);
+    drawWorld(CONTEXT, WORLD_PARAMS);
+    
+};
