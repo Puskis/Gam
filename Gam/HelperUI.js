@@ -23,25 +23,28 @@ var ShowCoordinates = function (context, worldParams) {
     });
 };
 
-var fpsWatch_dtArr =[];
-function fpsWatch(dt) {
-    if (fpsWatch_dtArr.length >= 60) {
-        fpsWatch_dtArr.shift();
-        fpsWatch_dtArr.push(dt);
-    }
-    else {
-        fpsWatch_dtArr.push(dt);
-    }
+(function () {
+    var fpsWatch_dtArr = [];
 
-    var avg_dt =0;
-    for (var i=0; i < fpsWatch_dtArr.length; i++) {
-        avg_dt += fpsWatch_dtArr[i];
-    }
-    avg_dt = avg_dt / fpsWatch_dtArr.length;
+    fpsWatch = function (dt) {
+        if (fpsWatch_dtArr.length >= 60) {
+            fpsWatch_dtArr.shift();
+            fpsWatch_dtArr.push(dt);
+        }
+        else {
+            fpsWatch_dtArr.push(dt);
+        }
 
-    var context = CONTEXT;
-    context.clearRect(WORLD_PARAMS.width-100, 0, 450, 80);
-    context.fillStyle = "black";
-    context.font = "12pt Monospace";
-    context.fillText("fps: " + Math.ceil(1 / avg_dt * 1000), WORLD_PARAMS.width - 100, 20);
-};
+        var avg_dt = 0;
+        for (var i = 0; i < fpsWatch_dtArr.length; i++) {
+            avg_dt += fpsWatch_dtArr[i];
+        }
+        avg_dt = avg_dt / fpsWatch_dtArr.length;
+
+        var context = CONTEXT;
+        context.clearRect(WORLD_PARAMS.width - 100, 0, 450, 80);
+        context.fillStyle = "black";
+        context.font = "12pt Monospace";
+        context.fillText("fps: " + Math.ceil(1 / avg_dt * 1000), WORLD_PARAMS.width - 100, 20);
+    }
+})();
