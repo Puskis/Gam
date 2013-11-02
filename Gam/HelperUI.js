@@ -1,13 +1,13 @@
 ﻿
 var ShowCoordinates = function (context, worldParams) {
-    context.canvas.addEventListener("mousemove", function (event) {
+    
         context.clearRect(0, 0, 150, 80);
-        var boundingRect = context.canvas.getBoundingClientRect();
         context.fillStyle = "black";
         context.font = "12pt Monospace";
-        var lx = (event.clientX - boundingRect.left);
-        var ly = (event.clientY - boundingRect.top);
         var rect = worldParams.getTileBoundaries();
+
+        var lx = pointer.canvasX;
+        var ly = pointer.canvasY;
 
         var cartX = worldParams.axonometry.getCartesianX(lx, ly);
         var cartY = worldParams.axonometry.getCartesianY(lx, ly);
@@ -20,7 +20,6 @@ var ShowCoordinates = function (context, worldParams) {
             context.fillText("Axo: [" + worldParams.axonometry.getAxonometricX(lx, ly) + "," + worldParams.axonometry.getAxonometricY(lx, ly) + "]", 10, 40);
             context.fillText("Car: [" + cartX + "," + cartY + "]", 10, 60);
         }
-    });
 };
 
 (function () {

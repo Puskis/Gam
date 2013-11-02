@@ -1,6 +1,6 @@
 var CONTEXT;
 var WORLD_PARAMS;
-var TIME;
+var time;
 
 var animFrame = window.requestAnimationFrame ||
            window.webkitRequestAnimationFrame ||
@@ -65,21 +65,30 @@ $().ready(function (context) {
     };
 
     CONTEXT = createCanvas(WORLD_PARAMS.width, WORLD_PARAMS.height);
-    TIME = Date.now();
+    CONTEXT.canvas.addEventListener("mousemove", function (event) { pointer.mouseLocationReader(event) });
+   
+
+    time = Date.now();
     animFrame(animationLoop);
-
-
-
-
-    //For debugging purposes
-    ShowCoordinates(CONTEXT, WORLD_PARAMS);
 
 });
 
+pointer = {
+    canvasX: 0,
+    canvasY: 0,
+    mouseLocationReader: function (event) {
+        var boundingRect = CONTEXT.canvas.getBoundingClientRect();
+        this.canvasX = (event.clientX - boundingRect.left);
+        this.canvasY = (event.clientY - boundingRect.top);
+    }
+};
+
 function mainLoop() {
-    var dt = Date.now() - TIME;
-    TIME = Date.now();
+    var dt = Date.now() - time;
+    time = Date.now();
     fpsWatch(dt);
     drawWorld(CONTEXT, WORLD_PARAMS);
     
+    //For debugging purposes
+    ShowCoordinates(CONTEXT, WORLD_PARAMS);
 };
