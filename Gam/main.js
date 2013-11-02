@@ -35,9 +35,9 @@ function mainLoop() {
     var dt = Date.now() - time;
     time = Date.now();
 
-    drawWorld(mainCtx, worldParams, transformations);
+    drawWorld(mainCtx, worldParams, transformation);
     
     //For debugging purposes
-    ShowCoordinates(mainCtx, worldParams, transformations);
+    ShowCoordinates(mainCtx, worldParams, transformation);
     showFPS(mainCtx, worldParams, dt);
 };

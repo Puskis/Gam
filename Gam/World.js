@@ -9,17 +9,18 @@ var createCanvas = function (width, height) {
     return context = c.getContext("2d");
 };
 
-var drawWorld = function (_context, _worldParams, _transformations) {
+var drawWorld = function (_context, _worldParams, _transformation) {
     _context.save();
-    _context.setTransform(_transformations.scaleX,
-       _transformations.skewX,
-       _transformations.skewY,
-       _transformations.scaleY,
-       _transformations.posX,
-       _transformations.posY);
+    _context.setTransform(_transformation.scaleX,
+       _transformation.skewX,
+       _transformation.skewY,
+       _transformation.scaleY,
+       _transformation.posX,
+       _transformation.posY);
 
-    var pX = _transformations.getCartesianX(pointer.canvasX, pointer.canvasY);
-    var pY = _transformations.getCartesianY(pointer.canvasX, pointer.canvasY);
+    var _transformerBackPos = _transformation.transformBack(pointer.canvasX, pointer.canvasY);
+    var pX = _transformerBackPos.x
+    var pY = _transformerBackPos.y;
 
     _context.clearRect(0, 0, _worldParams.width, _worldParams.height);
 
