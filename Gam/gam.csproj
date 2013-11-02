@@ -61,6 +61,7 @@
     <Content Include="img\circle.png" />
     <Content Include="index.html" />
     <Content Include="main.js" />
+    <Content Include="mainObjects.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="styles.css" />
     <Content Include="styles.js" />

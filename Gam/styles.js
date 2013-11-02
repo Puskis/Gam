@@ -1,7 +1,8 @@
 ﻿
 var worldStyles = {
     worldSkewedTileStrokeStyle: "#DDDDDD",
-    worldOrtogonalTileStrokeStyle: "#99F9E2"
+    worldSkewedTileStrokeStyleHover: "#505050",
 
-
+    worldOrtogonalTileStrokeStyle: "#99F9E2",
+    worldOrtogonalTileStrokeStyleHover: "#00AA00"
 };
