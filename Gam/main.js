@@ -86,9 +86,10 @@ pointer = {
 function mainLoop() {
     var dt = Date.now() - time;
     time = Date.now();
-    fpsWatch(dt);
+
     drawWorld(CONTEXT, WORLD_PARAMS);
     
     //For debugging purposes
     ShowCoordinates(CONTEXT, WORLD_PARAMS);
+    showFPS(dt);
 };

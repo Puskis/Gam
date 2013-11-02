@@ -25,7 +25,7 @@ var ShowCoordinates = function (context, worldParams) {
 (function () {
     var fpsWatch_dtArr = [];
 
-    fpsWatch = function (dt) {
+    showFPS = function (dt) {
         if (fpsWatch_dtArr.length >= 60) {
             fpsWatch_dtArr.shift();
             fpsWatch_dtArr.push(dt);
