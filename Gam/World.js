@@ -9,7 +9,7 @@ var createCanvas = function (width, height) {
     return context = c.getContext("2d");
 };
 
-var drawWorld = function (_context, _worldParams, _transformation) {
+function drawTiles(_context, _transformation, _worldParams) {
     _context.save();
     _context.setTransform(_transformation.scaleX,
        _transformation.skewX,
@@ -18,46 +18,35 @@ var drawWorld = function (_context, _worldParams, _transformation) {
        _transformation.posX,
        _transformation.posY);
 
-    var _transformerBackPos = _transformation.transformBack(pointer.canvasX, pointer.canvasY);
-    var pX = _transformerBackPos.x
-    var pY = _transformerBackPos.y;
+    _context.beginPath();
+    _context.strokeStyle = worldStyles.worldSkewedTileStrokeStyle;
 
-    _context.clearRect(0, 0, _worldParams.width, _worldParams.height);
+    var tiles = tileRepo.tiles;
 
-    for (var i = 0; i < _worldParams.tilesHorizontal; i++) {
-        for (var j = 0; j < _worldParams.tilesVertical; j++) {
-            var cX = _worldParams.marginLeft + i * _worldParams.tileSize;
-            var cY = _worldParams.marginTop + j * _worldParams.tileSize
-            
-            if (pX > cX && pX < cX + _worldParams.tileSize
-                && pY > cY && pY < cY + _worldParams.tileSize) {
-                _context.strokeStyle = worldStyles.worldSkewedTileStrokeStyleHover;         
-            }
-            else {
-                _context.strokeStyle = worldStyles.worldSkewedTileStrokeStyle;
-            }
-
-            _context.strokeRect(cX, cY, _worldParams.tileSize, _worldParams.tileSize);
-        }
+    for (var i = 0; i < tiles.length; i++) {
+        _context.rect(tiles[i].x, tiles[i].y, tiles[i].size, tiles[i].size);
     }
+    _context.stroke();
+
+    var hoveredTile = tileRepo.getHoveredTile();
+    if (hoveredTile != undefined || hoveredTile != null) {
+        _context.strokeStyle = worldStyles.worldSkewedTileStrokeStyleHover;
+        _context.strokeRect(hoveredTile.x, hoveredTile.y, hoveredTile.size, hoveredTile.size);
+    }
+
     _context.restore();
 
-    //for (var i = 0; i < _worldParams.tilesHorizontal; i++) {
-    //    for (var j = 0; j < _worldParams.tilesVertical; j++) {
-    //        var cX = _worldParams.marginLeft + i * _worldParams.tileSize;
-    //        var cY = _worldParams.marginTop + j * _worldParams.tileSize
+    for (var i = 0; i < tiles.length; i++) {
+        if (tiles[i].object != null) {
+            var pos = _transformation.transform(tiles[i].x, tiles[i].y);
+            _context.drawImage(img_factory, pos.x - 20, pos.y - 7);
+        }
+    }
 
-    //        if (pX > cX && pX < cX + _worldParams.tileSize
-    //            && pY > cY && pY < cY + _worldParams.tileSize) {
-    //            _context.strokeStyle = worldStyles.worldOrtogonalTileStrokeStyleHover;
-    //            //_context.lineWidth = 10;
-    //        }
-    //        else {
-    //            _context.strokeStyle = worldStyles.worldOrtogonalTileStrokeStyle;
-    //        }
-
-    //        _context.strokeRect(cX, cY, _worldParams.tileSize, _worldParams.tileSize);
-    //    }
+    //if (hoveredTile !== undefined) {
+    //   var pos = _transformation.transform(hoveredTile.x, hoveredTile.y);
+    //    _context.drawImage(img_factory, pos.x-27, pos.y-32);
     //}
 };
+
 

@@ -3,3 +3,6 @@
 /// <reference path="../World.js" />
 /// <reference path="../styles.js" />
 /// <reference path="../HelperUI.js" />
+/// <reference path="../engine.js" />
+/// <reference path="../mainObjects.js" />
+/// <reference path="../engine.js" />
