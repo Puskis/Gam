@@ -1,4 +1,16 @@
-﻿var tileRepo = {
+﻿//Scripts for tile logic
+
+function Tile(row, column, x, y, size) {
+    this.row = row;
+    this.column = column;
+    this.hovered = false;
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.object = null;
+};
+
+var tileRepo = {
     tiles: [],
 
     createTiles: function (_worldParams) {
