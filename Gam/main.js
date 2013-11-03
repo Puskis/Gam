@@ -29,19 +29,17 @@ $().ready(function () {
     mainCtx.canvas.addEventListener("click", function (event) {
         var hoveredTile = tileRepo.getHoveredTile();
         if (hoveredTile != null) {     
-            hoveredTile.object = imageRepo.get("factory");
+            var spriteData = spriteRepo.get("canonSprite");
+            hoveredTile.object = new Sprite(spriteData.frameWidth, spriteData.frameSequence, spriteData.speed, spriteData.img);
         }
     });
   
     tileRepo.createTiles(worldParams);
 
-    //start the main loop   
-    
-    img_factory = new Image(50, 50);
-    img_factory.src = "img/factory.png";
-    img_factory.name = "factory";
-    imageRepo.add(img_factory);
+    spriteRepo.add("factory", "img/factory.png", 50, 25, 25, [0], 1000);
+    spriteRepo.add("canonSprite", "img/canonSprite.png" , 294, 40, 50, [0,1,2,3,4,5,6,6,6,6,6,6,6,6,5,4,3,2,1,0], 50);
 
+    //start the main loop   
     animFrame(animationLoop);
 });
 
@@ -49,7 +47,8 @@ function mainLoop() {
     var dt = Date.now() - time;
     time = Date.now();
 
-    tileRepo.setHoveredTileFlag();
+
+    updateTiles(dt);
 
     mainCtx.clearRect(0, 0, worldParams.width, worldParams.height);
     drawTiles(mainCtx, transformation, worldParams);

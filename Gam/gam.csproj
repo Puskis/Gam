@@ -59,7 +59,7 @@
   <ItemGroup>
     <Content Include="engine.js" />
     <Content Include="HelperUI.js" />
-    <Content Include="img\circle.png" />
+    <Content Include="img\canonSprite.png" />
     <Content Include="img\factory.png" />
     <Content Include="index.html" />
     <Content Include="main.js" />

@@ -39,7 +39,7 @@ function drawTiles(_context, _transformation, _worldParams) {
     for (var i = 0; i < tiles.length; i++) {
         if (tiles[i].object != null) {
             var pos = _transformation.transform(tiles[i].x, tiles[i].y);
-            _context.drawImage(img_factory, pos.x - 20, pos.y - 7);
+            tiles[i].object.draw(_context, pos.x, pos.y);
         }
     }
 
@@ -49,4 +49,12 @@ function drawTiles(_context, _transformation, _worldParams) {
     //}
 };
 
+function updateTiles(dt) {
+    tileRepo.setHoveredTileFlag();
+    for (var i = 0; i < tileRepo.tiles.length; i++) {
+        if (tileRepo.tiles[i].object != null && tileRepo.tiles[i].object != undefined) {
+            tileRepo.tiles[i].object.update(dt);
+        }
+    }
 
+};
