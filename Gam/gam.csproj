@@ -57,9 +57,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="img\harvester.png" />
     <Content Include="Scripts\Debuging\HelperUI.js" />
-    <Content Include="img\canonSprite.png" />
-    <Content Include="img\factory.png" />
+    <Content Include="img\canon.png" />
     <Content Include="index.html" />
     <Content Include="main.js" />
     <Content Include="Scripts\Engine\mainObjects.js" />

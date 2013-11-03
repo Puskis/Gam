@@ -38,7 +38,7 @@ function drawTiles(_context, _transformation, _worldParams) {
 
     for (var i = 0; i < tiles.length; i++) {
         if (tiles[i].object != null) {
-            var pos = _transformation.transform(tiles[i].x, tiles[i].y);
+            var pos = _transformation.transform(tiles[i].x, tiles[i].y+ _worldParams.tileSize);
             tiles[i].object.draw(_context, pos.x, pos.y);
         }
     }

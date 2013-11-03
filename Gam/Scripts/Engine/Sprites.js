@@ -34,15 +34,17 @@ function Sprite(frameWidth, frameSequence, speed, image) {
 
 Sprite.prototype = {
     update: function (dt) {
-        if (this.lastUpdated >= this.speed) {
-            this.lastUpdated = 0;
-            this.currentFrame++;
-            if (this.currentFrame >= this.frameSequence.length) {
-                this.currentFrame = 0;
+        if (this.speed != 0) {
+            if (this.lastUpdated >= this.speed) {
+                this.lastUpdated = 0;
+                this.currentFrame++;
+                if (this.currentFrame >= this.frameSequence.length) {
+                    this.currentFrame = 0;
+                }
             }
-        }
-        else {
-            this.lastUpdated += dt;
+            else {
+                this.lastUpdated += dt;
+            }
         }
     },
 
@@ -54,8 +56,8 @@ Sprite.prototype = {
             0,
             this.frameWidth,
             this.img.height,
-            x - (this.frameWidth / 2) + 5,
-            y - (this.img.height / 2) - 3,
+            x,
+            y - this.img.height,
             this.frameWidth,
             this.img.height
         );
