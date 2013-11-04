@@ -61,10 +61,10 @@
     <Content Include="img\canon.png" />
     <Content Include="index.html" />
     <Content Include="main.js" />
+    <Content Include="Scripts\Helper\HelperUI.js" />
     <Content Include="Scripts\Engine\mainObjects.js" />
     <Content Include="Scripts\Engine\Sprites.js" />
     <Content Include="Scripts\Engine\Tiles.js" />
-    <Content Include="Scripts\Debuging\HelperUI.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="styles.css" />
     <Content Include="styles.js" />
