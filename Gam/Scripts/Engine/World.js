@@ -31,6 +31,7 @@ function drawTiles(_context, _transformation, _worldParams) {
     var hoveredTile = tileRepo.getHoveredTile();
     if (hoveredTile != undefined || hoveredTile != null) {
         _context.strokeStyle = worldStyles.worldSkewedTileStrokeStyleHover;
+        _context.lineWidth = 3;
         _context.strokeRect(hoveredTile.x, hoveredTile.y, hoveredTile.size, hoveredTile.size);
     }
 
