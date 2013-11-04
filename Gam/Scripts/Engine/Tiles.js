@@ -14,12 +14,12 @@ var tileRepo = {
     tiles: [],
 
     createTiles: function (_worldParams) {
-        for (var i = 0; i < _worldParams.tilesHorizontal; i++) {
-            for (var j = 0; j < _worldParams.tilesVertical; j++) {
-                var cX = _worldParams.marginLeft + i * _worldParams.tileSize;
-                var cY = _worldParams.marginTop + j * _worldParams.tileSize
+        for (var i = 0; i < _worldParams.tilesVertical; i++) {
+            for (var j = 0; j < _worldParams.tilesHorizontal; j++) {
+                var cX = _worldParams.marginLeft + j * _worldParams.tileSize;
+                var cY = _worldParams.marginTop + i * _worldParams.tileSize
 
-                this.tiles.push(new Tile(i, j, cX, cY, _worldParams.tileSize));
+                this.tiles.push(new Tile(j, i, cX, cY, _worldParams.tileSize));
             }
         }
     },
