@@ -67,6 +67,7 @@
     <Content Include="Scripts\Engine\mainObjects.js" />
     <Content Include="Scripts\Engine\Sprites.js" />
     <Content Include="Scripts\Engine\Tiles.js" />
+    <Content Include="Scripts\UI\InfoList.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="styles.css" />
     <Content Include="styles.js" />

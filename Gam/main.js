@@ -74,6 +74,8 @@ function mainLoop(worldParams, transformation) {
     Gam.mainCtx.clearRect(0, 0, worldParams.width, worldParams.height);
     Gam.Repositories.tileRepo.draw(Gam.mainCtx, transformation, worldParams);
 
+    Gam.UI.InfoList.draw(Gam.mainCtx, { x: worldParams.width - Gam.UI.InfoList.width - 20, y: worldParams.height - Gam.UI.InfoList.height - 20});
+
     //For debugging purposes
     Gam.Helper.ShowCoordinates(Gam.mainCtx, worldParams, transformation);
     Gam.Helper.showFPS(Gam.mainCtx, worldParams, dt);

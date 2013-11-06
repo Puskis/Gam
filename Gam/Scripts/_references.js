@@ -8,3 +8,4 @@
 /// <reference path="Engine/Sprites.js" />
 /// <reference path="enums.js" />
 /// <reference path="Engine/Tiles.js" />
+/// <reference path="UI/InfoList.js" />

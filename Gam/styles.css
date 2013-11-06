@@ -1,7 +1,9 @@
 ﻿
 #worldCanvas {
-    border: 1px solid #000000;
+    border: 3px solid #000000;
     margin-left: auto;
     margin-right: auto;
     display: block;
+    background-color: whiteSmoke;
+    border-radius: 20px;
 }
