@@ -17,14 +17,14 @@ var tileRepo = {
         for (var i = 0; i < _worldParams.tilesVertical; i++) {
             for (var j = 0; j < _worldParams.tilesHorizontal; j++) {
                 var cX = _worldParams.marginLeft + j * _worldParams.tileSize;
-                var cY = _worldParams.marginTop + i * _worldParams.tileSize
+                var cY = _worldParams.marginTop + i * _worldParams.tileSize;
 
                 this.tiles.push(new Tile(j, i, cX, cY, _worldParams.tileSize));
             }
         }
     },
 
-    setHoveredTileFlag: function () {
+    setHoveredTileFlag: function (transformation) {
         var pointerTransformed = pointer.getTransformedPosition(transformation);
         var pX = pointerTransformed.x;
         var pY = pointerTransformed.y;
@@ -48,8 +48,8 @@ var tileRepo = {
         return hoveredTile;
     },
 
-    getHoveredTile: function () {
-        this.setHoveredTileFlag();
+    getHoveredTile: function (transformation) {
+        this.setHoveredTileFlag(transformation);
         for (var i = 0; i < this.tiles.length; i++) {
             if (this.tiles[i].hovered) {
                 return this.tiles[i];

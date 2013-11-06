@@ -11,9 +11,9 @@ var animFrame = window.requestAnimationFrame ||
 
 if (animFrame !== null) {
     time = Date.now();
-    var animationLoop = function () {
-        mainLoop();
-        animFrame(animationLoop);
+    var animationLoop = function (worldParams, transformation) {
+        mainLoop(worldParams, transformation);
+        animFrame(function () { animationLoop(worldParams, transformation); });
     };
 } else {
     setInterval(mainLoop, 1000/60);
@@ -22,19 +22,22 @@ if (animFrame !== null) {
 //Initialization
 $().ready(function () {
 
+    var worldParams = new WorldParams(1200, 600, 20, 25, 30, 170, 50);
+    var axoTransformation = new Transformation(1, 0, -0.7, 0.6, 300, 100);
+
     mainCtx = createCanvas(worldParams.width, worldParams.height);
-    mainCtx.canvas.addEventListener("mousemove", function (event) { pointer.mouseLocationReader(event) });
+    mainCtx.canvas.addEventListener("mousemove", function (event) { pointer.mouseLocationReader(event); });
     mainCtx.canvas.addEventListener("click", function () {
-        var hoveredTile = tileRepo.getHoveredTile();
+        var hoveredTile = tileRepo.getHoveredTile(axoTransformation);
         if (hoveredTile != null) {     
             var spriteData = spriteRepo.get("harvester");
             hoveredTile.object = new Sprite(spriteData.frameWidth, spriteData.frameSequence, spriteData.speed, spriteData.img);
         }
     });
     mainCtx.canvas.oncontextmenu = function () {
-        var hoveredTile = tileRepo.getHoveredTile();
+        var hoveredTile = tileRepo.getHoveredTile(axoTransformation);
         if (hoveredTile != null) {
-            var spriteData = spriteRepo.get("shield");
+            var spriteData = spriteRepo.get("canon");
             hoveredTile.object = new Sprite(spriteData.frameWidth, spriteData.frameSequence, spriteData.speed, spriteData.img);
         }
         return false;
@@ -46,34 +49,20 @@ $().ready(function () {
     spriteRepo.add("canon", "img/canon.png", 294, 40, 50, [0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 3, 2, 1, 0], 50);
     spriteRepo.add("shield", "img/shield.png", 150, 100, 150, [0], 0);
 
-
     //start the main loop   
-    animFrame(animationLoop);
+    animFrame(function () { animationLoop(worldParams, axoTransformation); });
 });
 
-function mainLoop() {
+function mainLoop(worldParams, transformation) {
     var dt = Date.now() - time;
     time = Date.now();
 
-    updateTiles(dt);
+    updateTiles(dt, transformation);
 
     mainCtx.clearRect(0, 0, worldParams.width, worldParams.height);
     drawTiles(mainCtx, transformation, worldParams);
-    
-
 
     //For debugging purposes
-
-    //var trans = {
-    //    scaleX: 1,
-    //    skewX: 0,
-    //    skewY: 0,
-    //    scaleY: 1,
-    //    posX: 0,
-    //    posY: 0
-    //}
-    //drawTiles(mainCtx, trans, worldParams);
-
     ShowCoordinates(mainCtx, worldParams, transformation);
     showFPS(mainCtx, worldParams, dt);
 };

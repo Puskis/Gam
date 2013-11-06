@@ -27,7 +27,7 @@ function Sprite(frameWidth, frameSequence, speed, image) {
     this.frameWidth = frameWidth,
     this.frameSequence = frameSequence,
     this.speed = speed,
-    this.img = image
+    this.img = image,
     this.lastUpdated = 0;
     this.frameCount = image.width / frameWidth;
 };
@@ -49,7 +49,6 @@ Sprite.prototype = {
     },
 
     draw: function (context, x, y) {
-        context = mainCtx;
         context.drawImage(
             this.img,
             this.frameSequence[this.currentFrame] * this.frameWidth,

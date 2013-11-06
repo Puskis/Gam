@@ -6,7 +6,7 @@ var createCanvas = function (width, height) {
     c.height = height;
     document.body.appendChild(c);
 
-    return context = c.getContext("2d");
+    return c.getContext("2d");
 };
 
 function drawTiles(_context, _transformation, _worldParams) {
@@ -28,7 +28,7 @@ function drawTiles(_context, _transformation, _worldParams) {
     }
     _context.stroke();
 
-    var hoveredTile = tileRepo.getHoveredTile();
+    var hoveredTile = tileRepo.getHoveredTile(_transformation);
     if (hoveredTile != undefined || hoveredTile != null) {
         _context.strokeStyle = worldStyles.worldSkewedTileStrokeStyleHover;
         _context.lineWidth = 3;
@@ -50,8 +50,8 @@ function drawTiles(_context, _transformation, _worldParams) {
     //}
 };
 
-function updateTiles(dt) {
-    tileRepo.setHoveredTileFlag();
+function updateTiles(dt, transformation) {
+    tileRepo.setHoveredTileFlag(transformation);
     for (var i = 0; i < tileRepo.tiles.length; i++) {
         if (tileRepo.tiles[i].object != null && tileRepo.tiles[i].object != undefined) {
             tileRepo.tiles[i].object.update(dt);

@@ -7,3 +7,4 @@
 /// <reference path="../styles.js" />
 /// <reference path="Engine/Sprites.js" />
 /// <reference path="Engine/Tiles.js" />
+/// <reference path="Engine/OtherContructors.js" />
