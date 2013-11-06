@@ -6,13 +6,13 @@ Gam.Engine = Gam.Engine || {};
 
 Gam.Repositories.spriteRepo = {
     objects: [],
-    add: function (id, src, imageWidth, imageHeight, frameWidth, frameSequence, speed) {
+    add: function (id, src, imageWidth, imageHeight, frameWidth, frameSequence, speed, spriteSizeInTiles) {
         var img = new Image(imageWidth, imageHeight);
         img.src = src;
         img.loaded = false;
         img.onload = function () { this.loaded = true; };
 
-        var spriteData = new Gam.Engine.SpriteData(id, img, frameWidth, frameSequence, speed);
+        var spriteData = new Gam.Engine.SpriteData(id, img, frameWidth, frameSequence, speed, spriteSizeInTiles);
         this.objects.push(spriteData);
     },
 
@@ -26,15 +26,16 @@ Gam.Repositories.spriteRepo = {
     }
 };
 
- Gam.Engine.Sprite = function(frameWidth, frameSequence, speed, image) {
+ Gam.Engine.Sprite = function(spriteData) {
     this.currentFrame = 0,
-    this.frameWidth = frameWidth,
-    this.frameSequence = frameSequence,
-    this.speed = speed,
-    this.img = image,
+    this.frameWidth = spriteData.frameWidth,
+    this.frameSequence = spriteData.frameSequence,
+    this.speed = spriteData.speed,
+    this.img = spriteData.img,
     this.lastUpdated = 0;
-    this.frameCount = image.width / frameWidth;
-};
+    this.frameCount = spriteData.img.width / spriteData.frameWidth;
+    this.spriteSizeInTiles = spriteData.spriteSizeInTiles;
+ };
 
  Gam.Engine.Sprite.prototype = {
     update: function (dt) {
@@ -52,25 +53,37 @@ Gam.Repositories.spriteRepo = {
         }
     },
 
-    draw: function (context, x, y) {
+    draw: function (context, transformation, tileSize, x, y) {
+        var pos;
+        switch (this.spriteSizeInTiles)
+        {
+            case 9:
+                pos = transformation.transform(x - tileSize, y + 2*tileSize);
+                break;
+            case 1:
+            default:
+                pos = transformation.transform(x, y + tileSize);
+                break;
+        }
         context.drawImage(
             this.img,
             this.frameSequence[this.currentFrame] * this.frameWidth,
             0,
             this.frameWidth,
             this.img.height,
-            x,
-            y - this.img.height,
+            pos.x,
+            pos.y - this.img.height,
             this.frameWidth,
             this.img.height
         );
     }
 };
 
-Gam.Engine.SpriteData = function (id, img, frameWidth, frameSequence, speed) {
+Gam.Engine.SpriteData = function (id, img, frameWidth, frameSequence, speed, spriteSizeInTiles) {
     this.id = id;
     this.img = img;
     this.frameWidth = frameWidth;
-    this.frameSequence = frameSequence; // f.e.: [0,1,2,3,2,1,0]
-    this.speed = speed;                 // miliseconds between each frame
+    this.frameSequence = frameSequence;             // f.e.: [0,1,2,3,2,1,0]
+    this.speed = speed;                             // miliseconds between each frame
+    this.spriteSizeInTiles = spriteSizeInTiles;     //How many tiles image occupies
 };
