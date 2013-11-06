@@ -44,23 +44,23 @@ $().ready(function () {
         var hoveredTile = Gam.Repositories.tileRepo.getHoveredTile(axoTransformation);
         if (hoveredTile != null) {     
             var spriteData = Gam.Repositories.spriteRepo.get("harvester");
-            hoveredTile.object = new Gam.Engine.Sprite(spriteData);
+            hoveredTile.add(new Gam.Engine.Sprite(spriteData));
         }
     });
     Gam.mainCtx.canvas.oncontextmenu = function () {
         var hoveredTile = Gam.Repositories.tileRepo.getHoveredTile(axoTransformation);
         if (hoveredTile != null) {
             var spriteData = Gam.Repositories.spriteRepo.get("shield");
-            hoveredTile.object = new Gam.Engine.Sprite(spriteData);
+            hoveredTile.add(new Gam.Engine.Sprite(spriteData));
         }
         return false;
     };
   
    Gam.Repositories.tileRepo.createTiles(worldParams);
 
-    Gam.Repositories.spriteRepo.add("harvester", "img/harvester.png", 450, 36, 50, [0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,1,1,2,1,1,2,1,2,1,2,3,4,5,6,7,8,1,1,1,1,1,0,0,0,0], 100, 1);
-    Gam.Repositories.spriteRepo.add("canon", "img/canon.png", 294, 40, 50, [0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 3, 2, 1, 0], 50, 1);
-    Gam.Repositories.spriteRepo.add("shield", "img/shield.png", 150, 100, 150, [0], 0, 9);
+    Gam.Repositories.spriteRepo.add("harvester", "img/harvester.png", 450, 36, 50, [0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,1,1,2,1,1,2,1,2,1,2,3,4,5,6,7,8,1,1,1,1,1,0,0,0,0], 100, 1, Gam.SpriteType.Unit);
+    Gam.Repositories.spriteRepo.add("canon", "img/canon.png", 294, 40, 50, [0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 3, 2, 1, 0], 50, 1, Gam.SpriteType.Unit);
+    Gam.Repositories.spriteRepo.add("shield", "img/shield.png", 150, 100, 150, [0], 0, 9, Gam.SpriteType.Armour);
 
     //start the main loop   
     animFrame(function () { animationLoop(worldParams, axoTransformation); });
@@ -69,10 +69,10 @@ $().ready(function () {
 function mainLoop(worldParams, transformation) {
     var dt = Date.now() - Gam.time;
     Gam.time = Date.now();
-    Gam.Repositories.tileRepo.updateTiles(dt, transformation);
+    Gam.Repositories.tileRepo.update(dt, transformation);
 
     Gam.mainCtx.clearRect(0, 0, worldParams.width, worldParams.height);
-    Gam.Repositories.tileRepo.drawTiles(Gam.mainCtx, transformation, worldParams);
+    Gam.Repositories.tileRepo.draw(Gam.mainCtx, transformation, worldParams);
 
     //For debugging purposes
     Gam.Helper.ShowCoordinates(Gam.mainCtx, worldParams, transformation);

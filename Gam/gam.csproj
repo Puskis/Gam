@@ -62,6 +62,7 @@
     <Content Include="img\shield.png" />
     <Content Include="index.html" />
     <Content Include="main.js" />
+    <Content Include="Scripts\enums.js" />
     <Content Include="Scripts\Helper\HelperUI.js" />
     <Content Include="Scripts\Engine\mainObjects.js" />
     <Content Include="Scripts\Engine\Sprites.js" />

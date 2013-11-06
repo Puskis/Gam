@@ -6,13 +6,13 @@ Gam.Engine = Gam.Engine || {};
 
 Gam.Repositories.spriteRepo = {
     objects: [],
-    add: function (id, src, imageWidth, imageHeight, frameWidth, frameSequence, speed, spriteSizeInTiles) {
+    add: function (id, src, imageWidth, imageHeight, frameWidth, frameSequence, speed, spriteSizeInTiles, spriteType) {
         var img = new Image(imageWidth, imageHeight);
         img.src = src;
         img.loaded = false;
         img.onload = function () { this.loaded = true; };
 
-        var spriteData = new Gam.Engine.SpriteData(id, img, frameWidth, frameSequence, speed, spriteSizeInTiles);
+        var spriteData = new Gam.Engine.SpriteData(id, img, frameWidth, frameSequence, speed, spriteSizeInTiles, spriteType);
         this.objects.push(spriteData);
     },
 
@@ -35,6 +35,7 @@ Gam.Repositories.spriteRepo = {
     this.lastUpdated = 0;
     this.frameCount = spriteData.img.width / spriteData.frameWidth;
     this.spriteSizeInTiles = spriteData.spriteSizeInTiles;
+     this.spriteType = spriteData.spriteType;
  };
 
  Gam.Engine.Sprite.prototype = {
@@ -79,11 +80,12 @@ Gam.Repositories.spriteRepo = {
     }
 };
 
-Gam.Engine.SpriteData = function (id, img, frameWidth, frameSequence, speed, spriteSizeInTiles) {
+Gam.Engine.SpriteData = function (id, img, frameWidth, frameSequence, speed, spriteSizeInTiles, spriteType) {
     this.id = id;
     this.img = img;
     this.frameWidth = frameWidth;
     this.frameSequence = frameSequence;             // f.e.: [0,1,2,3,2,1,0]
     this.speed = speed;                             // miliseconds between each frame
     this.spriteSizeInTiles = spriteSizeInTiles;     //How many tiles image occupies
+    this.spriteType = spriteType;
 };

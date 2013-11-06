@@ -6,4 +6,5 @@
 /// <reference path="Helper/HelperUI.js" />
 /// <reference path="Engine/World.js" />
 /// <reference path="Engine/Sprites.js" />
+/// <reference path="enums.js" />
 /// <reference path="Engine/Tiles.js" />

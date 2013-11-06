@@ -10,7 +10,25 @@ Gam.Engine.Tile = function(row, column, x, y, size) {
     this.x = x;
     this.y = y;
     this.size = size;
-    this.object = null;
+    this.unit = null;
+    this.armour = null;
+};
+
+Gam.Engine.Tile.prototype = {
+    add: function(sprite) {
+        switch (sprite.spriteType) {
+        case Gam.SpriteType.Unit:
+            if (this.unit === null) {
+                this.unit = sprite;
+            }
+            break;
+        case Gam.SpriteType.Armour:
+            if (this.armour === null) {
+                this.armour = sprite;
+            }
+            break;
+        }
+    }
 };
 
 //Repository where all tiles are stored
@@ -18,60 +36,67 @@ Gam.Repositories.tileRepo = {
     tiles: [],
 
     //Creates tile array by given worldParams
-    createTiles: function (_worldParams) {
-        for (var i = 0; i < _worldParams.tilesVertical; i++) {
-            for (var j = 0; j < _worldParams.tilesHorizontal; j++) {
-                var cX = _worldParams.marginLeft + j * _worldParams.tileSize;
-                var cY = _worldParams.marginTop + i * _worldParams.tileSize;
+    createTiles: function (worldParams) {
+        for (var i = 0; i < worldParams.tilesVertical; i++) {
+            for (var j = 0; j < worldParams.tilesHorizontal; j++) {
+                var cX = worldParams.marginLeft + j * worldParams.tileSize;
+                var cY = worldParams.marginTop + i * worldParams.tileSize;
 
-                this.tiles.push(new Gam.Engine.Tile(j, i, cX, cY, _worldParams.tileSize));
+                this.tiles.push(new Gam.Engine.Tile(j, i, cX, cY, worldParams.tileSize));
             }
         }
     },
     
     //Updates tiles
-    updateTiles: function(dt, transformation) {
+    update: function(dt, transformation) {
        Gam.Repositories.tileRepo.UpdateTilesHoveredFlag(transformation);
        for (var i = 0; i < Gam.Repositories.tileRepo.tiles.length; i++) {
-           if (Gam.Repositories.tileRepo.tiles[i].object != null && Gam.Repositories.tileRepo.tiles[i].object != undefined) {
-               Gam.Repositories.tileRepo.tiles[i].object.update(dt);
+           if (Gam.Repositories.tileRepo.tiles[i].unit != null && Gam.Repositories.tileRepo.tiles[i].unit != undefined) {
+               Gam.Repositories.tileRepo.tiles[i].unit.update(dt);
             }
         }
 
     },
     
     //Draws tiles to canvas context
-    drawTiles: function(_context, _transformation, _worldParams) {
-        _context.save();
-        _context.setTransform(_transformation.scaleX,
-            _transformation.skewX,
-            _transformation.skewY,
-            _transformation.scaleY,
-            _transformation.posX,
-            _transformation.posY);
+    draw: function(context, transformation, worldParams) {
 
-        _context.beginPath();
-        _context.strokeStyle = worldStyles.worldSkewedTileStrokeStyle;
+        context.save();
 
+        context.setTransform(transformation.scaleX,
+            transformation.skewX,
+            transformation.skewY,
+            transformation.scaleY,
+            transformation.posX,
+            transformation.posY);
+
+        context.beginPath();
+        
+        //draw empty tiles
+        context.strokeStyle = worldStyles.worldSkewedTileStrokeStyle;
         var tiles = this.tiles;
-
         for (var i = 0; i < tiles.length; i++) {
-            _context.rect(tiles[i].x, tiles[i].y, tiles[i].size, tiles[i].size);
+            context.rect(tiles[i].x, tiles[i].y, tiles[i].size, tiles[i].size);
         }
-        _context.stroke();
+        context.stroke();
 
-        var hoveredTile = this.getHoveredTile(_transformation);
+        //draw border across hovered tile
+        var hoveredTile = this.getHoveredTile(transformation);
         if (hoveredTile != undefined || hoveredTile != null) {
-            _context.strokeStyle = worldStyles.worldSkewedTileStrokeStyleHover;
-            _context.lineWidth = 3;
-            _context.strokeRect(hoveredTile.x, hoveredTile.y, hoveredTile.size, hoveredTile.size);
+            context.strokeStyle = worldStyles.worldSkewedTileStrokeStyleHover;
+            context.lineWidth = 3;
+            context.strokeRect(hoveredTile.x, hoveredTile.y, hoveredTile.size, hoveredTile.size);
         }
 
-        _context.restore();
+        context.restore();
 
+        //draw sprites
         for (var i = 0; i < tiles.length; i++) {
-            if (tiles[i].object != null) {
-                tiles[i].object.draw(_context, _transformation, _worldParams.tileSize, tiles[i].x, tiles[i].y);
+            if (tiles[i].unit != null) {
+                tiles[i].unit.draw(context, transformation, worldParams.tileSize, tiles[i].x, tiles[i].y);
+            }
+            if (tiles[i].armour != null) {
+                tiles[i].armour.draw(context, transformation, worldParams.tileSize, tiles[i].x, tiles[i].y);
             }
         }
     },
