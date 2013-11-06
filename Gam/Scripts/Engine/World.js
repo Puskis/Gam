@@ -1,61 +1,57 @@
-﻿
-var createCanvas = function (width, height) {
-    var c = document.createElement("canvas");
-    c.id = "worldCanvas";
-    c.width = width;
-    c.height = height;
-    document.body.appendChild(c);
+﻿var Gam = Gam || {};
+Gam.World = Gam.World || {};
 
-    return c.getContext("2d");
+Gam.World.WorldParams = function (width, height, tileVcount, tileHcount, tileSize, marginLeft, marginTop) {
+    this.width = width;
+    this.height = height;
+    this.tilesVertical = tileVcount;
+    this.tilesHorizontal = tileHcount;
+    this.tileSize = tileSize;
+    this.marginLeft = marginLeft;
+    this.marginTop = marginTop;
 };
 
-function drawTiles(_context, _transformation, _worldParams) {
-    _context.save();
-    _context.setTransform(_transformation.scaleX,
-       _transformation.skewX,
-       _transformation.skewY,
-       _transformation.scaleY,
-       _transformation.posX,
-       _transformation.posY);
 
-    _context.beginPath();
-    _context.strokeStyle = worldStyles.worldSkewedTileStrokeStyle;
-
-    var tiles = tileRepo.tiles;
-
-    for (var i = 0; i < tiles.length; i++) {
-        _context.rect(tiles[i].x, tiles[i].y, tiles[i].size, tiles[i].size);
+Gam.World.WorldParams.prototype = {
+    getTileBoundaries: function () {
+        var rect = {
+            left: this.marginLeft,
+            right: this.marginLeft + (this.tileSize * this.tilesHorizontal),
+            top: this.marginTop,
+            bottom: this.marginTop + (this.tileSize * this.tilesVertical)
+        };
+        return rect;
     }
-    _context.stroke();
-
-    var hoveredTile = tileRepo.getHoveredTile(_transformation);
-    if (hoveredTile != undefined || hoveredTile != null) {
-        _context.strokeStyle = worldStyles.worldSkewedTileStrokeStyleHover;
-        _context.lineWidth = 3;
-        _context.strokeRect(hoveredTile.x, hoveredTile.y, hoveredTile.size, hoveredTile.size);
-    }
-
-    _context.restore();
-
-    for (var i = 0; i < tiles.length; i++) {
-        if (tiles[i].object != null) {
-            var pos = _transformation.transform(tiles[i].x, tiles[i].y+ _worldParams.tileSize);
-            tiles[i].object.draw(_context, pos.x, pos.y);
-        }
-    }
-
-    //if (hoveredTile !== undefined) {
-    //   var pos = _transformation.transform(hoveredTile.x, hoveredTile.y);
-    //    _context.drawImage(img_factory, pos.x-27, pos.y-32);
-    //}
 };
 
-function updateTiles(dt, transformation) {
-    tileRepo.setHoveredTileFlag(transformation);
-    for (var i = 0; i < tileRepo.tiles.length; i++) {
-        if (tileRepo.tiles[i].object != null && tileRepo.tiles[i].object != undefined) {
-            tileRepo.tiles[i].object.update(dt);
-        }
-    }
+Gam.World.Transformation = function (scaleX, skewX, skewY, scaleY, posX, posY) {
+    this.scaleX = scaleX;
+    this.skewX = skewX;
+    this.skewY = skewY;
+    this.scaleY = scaleY;
+    this.posX = posX;
+    this.posY = posY;
+};
 
+Gam.World.Transformation.prototype = {
+    transform: function (x, y) {
+        return {
+            x: (Math.round(x * this.scaleX + y * this.skewY + this.posX)),
+            y: (Math.round(x * this.skewX + y * this.scaleY + this.posY))
+        };
+    },
+
+    transformBack: function (x, y) {
+        return {
+            x: (Math.round(
+                x * (this.scaleY / (this.scaleX * this.scaleY - this.skewX * this.skewY)) +
+                    y * (-(this.skewY / (this.scaleX * this.scaleY - this.skewX * this.skewY))) +
+                    (this.skewY * this.posY - this.scaleY * this.posX) / (this.scaleX * this.scaleY - this.skewX * this.skewY))),
+
+            y: (Math.round(
+                x * (-(this.skewX)) / (this.scaleX * this.scaleY - this.skewX * this.skewY) +
+                    y * (this.scaleX / (this.scaleX * this.scaleY - this.skewX * this.skewY)) +
+                    (-(this.scaleX * this.posY - this.skewX * this.posX) / (this.scaleX * this.scaleY - this.skewX * this.skewY))))
+        };
+    }
 };

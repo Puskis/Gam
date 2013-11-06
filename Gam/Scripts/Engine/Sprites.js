@@ -1,6 +1,10 @@
 ﻿//scripts for sprite logic
 
-var spriteRepo = {
+var Gam = Gam || {};
+Gam.Repositories = Gam.Repositories || {};
+Gam.Engine = Gam.Engine || {};
+
+Gam.Repositories.spriteRepo = {
     objects: [],
     add: function (id, src, imageWidth, imageHeight, frameWidth, frameSequence, speed) {
         var img = new Image(imageWidth, imageHeight);
@@ -8,7 +12,7 @@ var spriteRepo = {
         img.loaded = false;
         img.onload = function () { this.loaded = true; };
 
-        var spriteData = new SpriteData(id, img, frameWidth, frameSequence, speed);
+        var spriteData = new Gam.Engine.SpriteData(id, img, frameWidth, frameSequence, speed);
         this.objects.push(spriteData);
     },
 
@@ -22,7 +26,7 @@ var spriteRepo = {
     }
 };
 
-function Sprite(frameWidth, frameSequence, speed, image) {
+ Gam.Engine.Sprite = function(frameWidth, frameSequence, speed, image) {
     this.currentFrame = 0,
     this.frameWidth = frameWidth,
     this.frameSequence = frameSequence,
@@ -32,7 +36,7 @@ function Sprite(frameWidth, frameSequence, speed, image) {
     this.frameCount = image.width / frameWidth;
 };
 
-Sprite.prototype = {
+ Gam.Engine.Sprite.prototype = {
     update: function (dt) {
         if (this.speed != 0) {
             if (this.lastUpdated >= this.speed) {
@@ -63,7 +67,7 @@ Sprite.prototype = {
     }
 };
 
-function SpriteData(id, img, frameWidth, frameSequence, speed) {
+Gam.Engine.SpriteData = function (id, img, frameWidth, frameSequence, speed) {
     this.id = id;
     this.img = img;
     this.frameWidth = frameWidth;

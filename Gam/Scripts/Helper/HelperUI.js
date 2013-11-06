@@ -1,12 +1,15 @@
-﻿var ShowCoordinates = function (_context, _worldParams, _transformation) {
+﻿var Gam = Gam || {};
+Gam.Helper = Gam.Helper || {};
+
+Gam.Helper.ShowCoordinates = function (_context, _worldParams, _transformation) {
 
     _context.clearRect(0, 0, 150, 80);
     _context.fillStyle = "black";
     _context.font = "12pt Monospace";
     var rect = _worldParams.getTileBoundaries();
 
-    var lx = pointer.canvasX;
-    var ly = pointer.canvasY;
+    var lx = Gam.pointer.canvasX;
+    var ly = Gam.pointer.canvasY;
 
     var _transformedBackPos = _transformation.transformBack(lx, ly);
     var cartX = _transformedBackPos.x;
@@ -26,12 +29,11 @@
 (function () {
     var fpsWatch_dtArr = [];
 
-    showFPS = function (_context, _worldParams, dt) {
+    Gam.Helper.showFPS = function(_context, _worldParams, dt) {
         if (fpsWatch_dtArr.length >= 60) {
             fpsWatch_dtArr.shift();
             fpsWatch_dtArr.push(dt);
-        }
-        else {
+        } else {
             fpsWatch_dtArr.push(dt);
         }
 
@@ -45,5 +47,5 @@
         _context.fillStyle = "black";
         _context.font = "12pt Monospace";
         _context.fillText("fps: " + Math.ceil(1 / avg_dt * 1000), _worldParams.width - 100, 20);
-    }
+    };
 })();
