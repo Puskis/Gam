@@ -91,4 +91,7 @@ function mainLoop(worldParams, transformation) {
     //For debugging purposes
     Gam.Helper.ShowCoordinates(Gam.mainCtx, worldParams, transformation);
     Gam.Helper.showFPS(Gam.mainCtx, dt);
+
+    //var t = new Gam.World.Transformation(1, 0, 0, 1, 0, 0);
+    //Gam.Repositories.tileRepo.draw(Gam.mainCtx, t);
 };
