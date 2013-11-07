@@ -62,11 +62,13 @@
     <Content Include="img\shield.png" />
     <Content Include="index.html" />
     <Content Include="main.js" />
+    <Content Include="Scripts\Engine\GameMessages.js" />
     <Content Include="Scripts\enums.js" />
     <Content Include="Scripts\Helper\HelperUI.js" />
     <Content Include="Scripts\Engine\mainObjects.js" />
     <Content Include="Scripts\Engine\Sprites.js" />
     <Content Include="Scripts\Engine\Tiles.js" />
+    <Content Include="Scripts\Localization.js" />
     <Content Include="Scripts\UI\InfoList.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="styles.css" />

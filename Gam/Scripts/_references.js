@@ -9,3 +9,5 @@
 /// <reference path="enums.js" />
 /// <reference path="Engine/Tiles.js" />
 /// <reference path="UI/InfoList.js" />
+/// <reference path="Localization.js" />
+/// <reference path="Engine/GameMessages.js" />

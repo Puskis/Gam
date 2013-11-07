@@ -1,11 +1,21 @@
 ﻿var Gam = Gam || {};
 Gam.UI = Gam.UI || {};
 
-Gam.UI.InfoList = {
-    width : 200,
-    height: 200,
+
+Gam.UI.InfoList = function (context, position, width, height) {
+    this.context = context;
+    this.x = position.x;
+    this.y = position.y;
+    this.width = 250;
+    this.height = 200;
     
-    draw: function(context, position) {
+    if (width != undefined && height != undefined) {
+        this.width = width;
+        this.height = height;
+    }
+
+
+    this.draw = function(messages) {
 
         context.save();
 
@@ -13,21 +23,29 @@ Gam.UI.InfoList = {
         context = Gam.mainCtx;
         context.strokeStyle = "#808080";
         context.beginPath();
-        context.moveTo(position.x + 10, position.y);
-        context.lineTo(position.x + this.width - 10, position.y);
-        context.arcTo(position.x + this.width, position.y, position.x + this.width, position.y + 10, 10);
-        context.lineTo(position.x + this.width, position.y + this.height - 10);
-        context.arcTo(position.x + this.width, position.y + this.height, position.x + this.width - 10, position.y + this.height, 10);
-        context.lineTo(position.x + 10, position.y + this.height);
-        context.arcTo(position.x, position.y + this.height, position.x, position.y + this.height - 10, 10);
-        context.lineTo(position.x, position.y + 10);
-        context.arcTo(position.x, position.y, position.x + 10, position.y, 10);
+        context.moveTo(this.x + 10, this.y);
+        context.lineTo(this.x + this.width - 10, this.y);
+        context.arcTo(this.x + this.width, this.y, this.x + this.width, this.y + 10, 10);
+        context.lineTo(this.x + this.width, this.y + this.height - 10);
+        context.arcTo(this.x + this.width, this.y + this.height, this.x + this.width - 10, this.y + this.height, 10);
+        context.lineTo(this.x + 10, this.y + this.height);
+        context.arcTo(this.x, this.y + this.height, this.x, this.y + this.height - 10, 10);
+        context.lineTo(this.x, this.y + 10);
+        context.arcTo(this.x, this.y, this.x + 10, this.y, 10);
         context.stroke();
 
         context.lineWidth = 1;
         context.font = "12px Monospace";
-        context.fillText("Game started...", position.x + 6, position.y + 16);
+
+        //take last 12 messages and draw it on the screen
+        var length = messages.length;
+        for (var i = length, j=1; i >= 0 && i > length-12; i--, j++) {
+            if (messages[i-1] === undefined) {
+                break;
+            }
+            context.fillText(messages[i-1], this.x + 6, this.y + j*16);
+        }
 
         context.restore();
-    }
+    };
 };

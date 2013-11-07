@@ -34,6 +34,8 @@ if (animFrame !== null) {
 
 //Initialization
 $().ready(function () {
+    Gam.Localization.current = Gam.Localization.english;
+    Gam.Engine.GameMessages.add(Gam.Localization.current.GameStarted);
 
     var worldParams = new Gam.World.WorldParams(1200, 600, 20, 25, 30, 170, 50);
     var axoTransformation = new Gam.World.Transformation(1, 0, -0.7, 0.6, 300, 100);
@@ -62,19 +64,24 @@ $().ready(function () {
     Gam.Repositories.spriteRepo.add("canon", "img/canon.png", 294, 40, 50, [0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 3, 2, 1, 0], 50, 1, Gam.SpriteType.Unit);
     Gam.Repositories.spriteRepo.add("shield", "img/shield.png", 150, 100, 150, [0], 0, 9, Gam.SpriteType.Armour);
 
-    //start the main loop   
+    //start the main loop      
     animFrame(function () { animationLoop(worldParams, axoTransformation); });
 });
 
 function mainLoop(worldParams, transformation) {
+    //update timespan
     var dt = Date.now() - Gam.time;
     Gam.time = Date.now();
+
+    //update game logic
     Gam.Repositories.tileRepo.update(dt, transformation);
 
+    //draw frame
     Gam.mainCtx.clearRect(0, 0, worldParams.width, worldParams.height);
     Gam.Repositories.tileRepo.draw(Gam.mainCtx, transformation, worldParams);
 
-    Gam.UI.InfoList.draw(Gam.mainCtx, { x: worldParams.width - Gam.UI.InfoList.width - 20, y: worldParams.height - Gam.UI.InfoList.height - 20});
+    var infoList = new Gam.UI.InfoList(Gam.mainCtx, { x: worldParams.width - 270, y: worldParams.height - 220 }, 250,200);
+    infoList.draw(Gam.Engine.GameMessages.messages);
 
     //For debugging purposes
     Gam.Helper.ShowCoordinates(Gam.mainCtx, worldParams, transformation);
