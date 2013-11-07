@@ -59,6 +59,7 @@
   <ItemGroup>
     <Content Include="img\canon.png" />
     <Content Include="img\harvester.png" />
+    <Content Include="img\menu_Build.png" />
     <Content Include="img\shield.png" />
     <Content Include="index.html" />
     <Content Include="main.js" />
@@ -69,7 +70,9 @@
     <Content Include="Scripts\Engine\Sprites.js" />
     <Content Include="Scripts\Engine\Tiles.js" />
     <Content Include="Scripts\Localization.js" />
+    <Content Include="Scripts\UI\ui.js" />
     <Content Include="Scripts\UI\InfoList.js" />
+    <Content Include="Scripts\UI\MenuPanel.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="styles.css" />
     <Content Include="styles.js" />

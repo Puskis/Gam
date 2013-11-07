@@ -1,35 +1,43 @@
 ﻿var Gam = Gam || {};
 Gam.Helper = Gam.Helper || {};
 
-Gam.Helper.ShowCoordinates = function (_context, _worldParams, _transformation) {
+Gam.Helper.ShowCoordinates = function (context, worldParams, transformation) {
+    var x = 900;
+    var y = 20;
+    var width = 150;
+    var height = 60;
 
-    _context.clearRect(0, 0, 150, 80);
-    _context.fillStyle = "black";
-    _context.font = "12pt Monospace";
-    var rect = _worldParams.getTileBoundaries();
+    context.clearRect(x, y, width, height);
+    context.fillStyle = "black";
+    context.font = "12pt Monospace";
+    var rect = worldParams.getTileBoundaries();
 
     var lx = Gam.pointer.canvasX;
     var ly = Gam.pointer.canvasY;
 
-    var _transformedBackPos = _transformation.transformBack(lx, ly);
-    var cartX = _transformedBackPos.x;
-    var cartY = _transformedBackPos.y;
+    var transformedBackPos = transformation.transformBack(lx, ly);
+    var cartX = transformedBackPos.x;
+    var cartY = transformedBackPos.y;
 
     if (cartX > rect.right || cartX < rect.left || cartY > rect.bottom || cartY < rect.top) {
-        _context.fillText("out of bounds", 10, 20);
+        context.fillText("out of bounds", x, y);
     }
     else {
-        var _transformedPos = _transformation.transform(lx, ly);
-        _context.fillText("Ort: [" + lx + "," + ly + "]", 10, 20);
-        _context.fillText("Axo: [" + _transformedPos.x + "," + _transformedPos.y + "]", 10, 40);
-        _context.fillText("Car: [" + cartX + "," + cartY + "]", 10, 60);
+        var transformedPos = transformation.transform(lx, ly);
+        context.fillText("Ort: [" + lx + "," + ly + "]", x, y);
+        context.fillText("Axo: [" + transformedPos.x + "," + transformedPos.y + "]", x, y+20);
+        context.fillText("Car: [" + cartX + "," + cartY + "]", x, y+40);
     }
 };
 
 (function () {
     var fpsWatch_dtArr = [];
+    var x = 1100;
+    var y = 20;
+    var width = 50;
+    var height = 10;
 
-    Gam.Helper.showFPS = function(_context, _worldParams, dt) {
+    Gam.Helper.showFPS = function(context, dt) {
         if (fpsWatch_dtArr.length >= 60) {
             fpsWatch_dtArr.shift();
             fpsWatch_dtArr.push(dt);
@@ -43,9 +51,9 @@ Gam.Helper.ShowCoordinates = function (_context, _worldParams, _transformation) 
         }
         avg_dt = avg_dt / fpsWatch_dtArr.length;
 
-        _context.clearRect(_worldParams.width - 100, 0, 450, 80);
-        _context.fillStyle = "black";
-        _context.font = "12pt Monospace";
-        _context.fillText("fps: " + Math.ceil(1 / avg_dt * 1000), _worldParams.width - 100, 20);
+        context.clearRect(x, y, width, height);
+        context.fillStyle = "black";
+        context.font = "12pt Monospace";
+        context.fillText("fps: " + Math.ceil(1 / avg_dt * 1000), 1100, y);
     };
 })();

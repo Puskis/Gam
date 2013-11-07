@@ -60,9 +60,11 @@ $().ready(function () {
   
    Gam.Repositories.tileRepo.createTiles(worldParams);
 
-    Gam.Repositories.spriteRepo.add("harvester", "img/harvester.png", 450, 36, 50, [0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,1,1,2,1,1,2,1,2,1,2,3,4,5,6,7,8,1,1,1,1,1,0,0,0,0], 100, 1, Gam.BuildingType.Unit);
-    Gam.Repositories.spriteRepo.add("canon", "img/canon.png", 294, 40, 50, [0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 3, 2, 1, 0], 50, 1, Gam.BuildingType.Unit);
-    Gam.Repositories.spriteRepo.add("shield", "img/shield.png", 150, 100, 150, [0], 0, 9, Gam.BuildingType.Armour);
+    Gam.Repositories.spriteRepo.add("harvester", "img/harvester.png", 450, 36, 50, [0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,1,1,2,1,1,2,1,2,1,2,3,4,5,6,7,8,1,1,1,1,1,0,0,0,0], 100, 1, Gam.BuildingTypeEnum.Unit);
+    Gam.Repositories.spriteRepo.add("canon", "img/canon.png", 294, 40, 50, [0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 3, 2, 1, 0], 50, 1, Gam.BuildingTypeEnum.Unit);
+    Gam.Repositories.spriteRepo.add("shield", "img/shield.png", 150, 100, 150, [0], 0, 9, Gam.BuildingTypeEnum.Armour);
+
+    Gam.Repositories.imageRepo.add(Gam.MenuImagesEnum.menu_Build, "img/menu_Build.png", 60, 30, 30);
 
     //start the main loop      
     animFrame(function () { animationLoop(worldParams, axoTransformation); });
@@ -80,10 +82,13 @@ function mainLoop(worldParams, transformation) {
     Gam.mainCtx.clearRect(0, 0, worldParams.width, worldParams.height);
     Gam.Repositories.tileRepo.draw(Gam.mainCtx, transformation);
 
-    var infoList = new Gam.UI.InfoList(Gam.mainCtx, { x: 20, y: worldParams.height - 100 }, worldParams.width-460,90);
+    var infoList = new Gam.UI.InfoList(Gam.mainCtx, { x: 20, y: worldParams.height - 100 }, worldParams.width-40,90);
     infoList.draw(Gam.Engine.GameMessages.messages);
+
+    var menuPanel = new Gam.UI.MenuPanel(Gam.mainCtx, { x: 20, y: 20 });
+    menuPanel.draw();
 
     //For debugging purposes
     Gam.Helper.ShowCoordinates(Gam.mainCtx, worldParams, transformation);
-    Gam.Helper.showFPS(Gam.mainCtx, worldParams, dt);
+    Gam.Helper.showFPS(Gam.mainCtx, dt);
 };

@@ -2,20 +2,15 @@
 Gam.UI = Gam.UI || {};
 
 
-Gam.UI.InfoList = function (context, position, width, height) {
+Gam.UI.MenuPanel = function (context, position) {
     this.context = context;
     this.x = position.x;
     this.y = position.y;
-    this.width = 250;
+    this.width = 50;
     this.height = 200;
-    
-    if (width != undefined && height != undefined) {
-        this.width = width;
-        this.height = height;
-    }
 
 
-    this.draw = function(messages) {
+    this.draw = function () {
 
         this.context.save();
 
@@ -33,18 +28,17 @@ Gam.UI.InfoList = function (context, position, width, height) {
         this.context.arcTo(this.x, this.y, this.x + 10, this.y, 10);
         this.context.stroke();
 
-        this.context.lineWidth = 1;
-        this.context.font = "12px Monospace";
-
-        //take last 5 messages and draw it on the screen
-        var length = messages.length;
-        for (var i = length, j=1; i >= 0 && i > length-5; i--, j++) {
-            if (messages[i-1] === undefined) {
-                break;
-            }
-            this.context.fillText(messages[i - 1], this.x + 6, this.y + j * 16);
+        //draw menu items
+       var image = Gam.Repositories.imageRepo.get(Gam.MenuImagesEnum.menu_Build);
+       if (image != null) {
+           this.context.drawImage(
+               image,
+               0, 0,
+               image.frameWidth, image.height,
+               this.x + (this.width - image.frameWidth) / 2, this.y+10,
+               image.frameWidth, image.height);
         }
 
-        this.context.restore();
+        context.restore();
     };
 };

@@ -18,7 +18,7 @@ Gam.Engine.Tile = function(row, column, x, y, size) {
 Gam.Engine.Tile.prototype = {
     addBuilding: function(sprite) {
         switch (sprite.spriteType) {
-        case Gam.BuildingType.Unit:
+        case Gam.BuildingTypeEnum.Unit:
             if (this.unit === null && (this.occupied == false || this.armour != null)) {
                     this.unit = sprite;
                     this.occupied = true;
@@ -27,7 +27,7 @@ Gam.Engine.Tile.prototype = {
                 Gam.Engine.GameMessages.add(Gam.Localization.current.CannotAddBuilding);
             }
             break;
-        case Gam.BuildingType.Armour:
+        case Gam.BuildingTypeEnum.Armour:
             if (this.armour === null) {
                 if (sprite.spriteSizeInTiles == 9) {
                     var neighboursOccupied = true;
