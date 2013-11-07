@@ -1,6 +1,6 @@
 ﻿var Gam = Gam || {};
 
-Gam.SpriteType = {    
+Gam.BuildingType = {    
     Unit: "unit",
     Armour: "armour"
 };

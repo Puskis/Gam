@@ -37,9 +37,9 @@ Gam.UI.InfoList = function (context, position, width, height) {
         context.lineWidth = 1;
         context.font = "12px Monospace";
 
-        //take last 12 messages and draw it on the screen
+        //take last 5 messages and draw it on the screen
         var length = messages.length;
-        for (var i = length, j=1; i >= 0 && i > length-12; i--, j++) {
+        for (var i = length, j=1; i >= 0 && i > length-5; i--, j++) {
             if (messages[i-1] === undefined) {
                 break;
             }

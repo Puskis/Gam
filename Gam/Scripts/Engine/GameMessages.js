@@ -5,7 +5,7 @@ Gam.Engine.GameMessages = {
     messages: [],
 
     add: function (message) {
-        if (this.messages.length > 50) {
+        if (this.messages.length >= 50) {
             this.messages.shift();
         }
         this.messages.push(message);
