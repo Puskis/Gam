@@ -41,6 +41,7 @@ $().ready(function () {
     var axoTransformation = new Gam.World.Transformation(1, 0, -0.7, 0.6, 300, 100);
 
     Gam.mainCtx = Gam.createCanvas(worldParams.width, worldParams.height);
+
     Gam.mainCtx.canvas.addEventListener("mousemove", function (event) { Gam.pointer.mouseLocationReader(event); });
     Gam.mainCtx.canvas.addEventListener("click", function () {
         var hoveredTile = Gam.Repositories.tileRepo.getHoveredTile(axoTransformation);
@@ -76,16 +77,17 @@ function mainLoop(worldParams, transformation) {
     Gam.time = Date.now();
 
     //update game logic
+    
     Gam.Repositories.tileRepo.update(dt, transformation);
 
     //draw frame
     Gam.mainCtx.clearRect(0, 0, worldParams.width, worldParams.height);
     Gam.Repositories.tileRepo.draw(Gam.mainCtx, transformation);
 
-    var infoList = new Gam.UI.InfoList(Gam.mainCtx, { x: 20, y: worldParams.height - 100 }, worldParams.width-40,90);
-    infoList.draw(Gam.Engine.GameMessages.messages);
+    var infoList = new Gam.UI.InfoList(Gam.mainCtx, { x: Gam.BoxPositions.InfoList.x, y: Gam.BoxPositions.InfoList.y }, Gam.BoxPositions.InfoList.width, Gam.BoxPositions.InfoList.height);
+    var menuPanel = new Gam.UI.MenuPanel(Gam.mainCtx, { x: Gam.BoxPositions.MenuPanel.x, y: Gam.BoxPositions.MenuPanel.y }, Gam.BoxPositions.MenuPanel.width, Gam.BoxPositions.MenuPanel.height);
 
-    var menuPanel = new Gam.UI.MenuPanel(Gam.mainCtx, { x: 20, y: 20 });
+    infoList.draw(Gam.Engine.GameMessages.messages);
     menuPanel.draw();
 
     //For debugging purposes

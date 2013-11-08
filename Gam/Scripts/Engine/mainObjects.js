@@ -17,10 +17,10 @@ Gam.pointer = {
 Gam.BoundRegister = {    
     bounds: [],
     
-    register: function (boundRect, transformation, hoverHandler, clickHandler) {
+    register: function (control, boundRect, hoverHandler, clickHandler) {
         var bound = {
+            control: control,
             rect: boundRect,
-            transformation: transformation,
             
             hoverHandler: function(pointerPos) {
                 hoverHandler(pointerPos);
@@ -29,9 +29,10 @@ Gam.BoundRegister = {
                 clickHandler(pointerPos);
             }          
         };
+        this.bounds.push(bound);
     },
     
-    callHoverHandler: function(pointerPos) {
+    getHoverHandler: function(pointerPos) {
         for (var i = 0; i < this.bounds.length; i++) {
             if (this.bounds[i].transformation != null) {
                 pointerPos = this.bounds[i].transformBack(pointerPos);
@@ -46,25 +47,35 @@ Gam.BoundRegister = {
         }
     },
     
-    callClickHandler: function(pointerPos) {
-    for (var i = 0; i < this.bounds.length; i++) {
-        if (this.bounds[i].transformation != null) {
-            pointerPos = this.bounds[i].transformBack(pointerPos);
-        }
-        if (pointerPos.x > this.bounds[i].rect.left &&
-            pointerPos.x < this.bounds[i].rect.right &&
-            pointerPos.y > this.bounds[i].rect.top &&
-            pointerPos.y < this.bounds[i].rect.bottom) {
+    getClickHandler: function(pointerPos) {
+        for (var i = 0; i < this.bounds.length; i++) {
+            if (this.bounds[i].transformation != null) {
+                pointerPos = this.bounds[i].transformBack(pointerPos);
+            }
+            if (pointerPos.x > this.bounds[i].rect.left &&
+                pointerPos.x < this.bounds[i].rect.right &&
+                pointerPos.y > this.bounds[i].rect.top &&
+                pointerPos.y < this.bounds[i].rect.bottom) {
 
-            this.bounds[i].clickHandler(pointerPos);
+                this.bounds[i].clickHandler(pointerPos);
+            }
         }
-    }
-}
+    },
 };
 
 //Used for positioning all boxes around the canvas
-Gam.BoxPositions = {    
-    TilesBox: {
- 
-    }
+//Tiles are not included. They take all the window and are processed last if no other bounding box takes control
+Gam.BoxPositions = {
+    MenuPanel: {
+        x: 20,
+        y: 20,
+        width: 50,
+        height: 200
+    },
+    InfoList: {
+        x: 20,
+        y: 500,
+        width: 1160,
+        height: 90
+    },
 };

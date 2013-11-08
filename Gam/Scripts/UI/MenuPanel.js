@@ -2,12 +2,12 @@
 Gam.UI = Gam.UI || {};
 
 
-Gam.UI.MenuPanel = function (context, position) {
+Gam.UI.MenuPanel = function (context, position, width, height) {
     this.context = context;
     this.x = position.x;
     this.y = position.y;
-    this.width = 50;
-    this.height = 200;
+    this.width = width;
+    this.height = height;
 
 
     this.draw = function () {
