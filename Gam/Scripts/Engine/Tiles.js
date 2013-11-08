@@ -76,8 +76,10 @@ Gam.Repositories.tileRepo = {
     worldParams: null,
 
     //Creates tile array by given worldParams
-    createTiles: function(worldParams) {
+    createTiles: function(worldParams, transformation) {
         this.worldParams = worldParams;
+        this.transformation = transformation;
+        
         for (var i = 0; i < worldParams.tilesVertical; i++) {
             for (var j = 0; j < worldParams.tilesHorizontal; j++) {
                 var cX = worldParams.marginLeft + j * worldParams.tileSize;
@@ -89,14 +91,12 @@ Gam.Repositories.tileRepo = {
     },
     
     //Updates tiles
-    update: function(dt, transformation) {
-        Gam.Repositories.tileRepo.UpdateTilesHoveredFlag(transformation);
+    update: function(dt) {
         for (var i = 0; i < Gam.Repositories.tileRepo.tiles.length; i++) {
             if (Gam.Repositories.tileRepo.tiles[i].unit != null && Gam.Repositories.tileRepo.tiles[i].unit != undefined) {
                 Gam.Repositories.tileRepo.tiles[i].unit.update(dt);
             }
         }
-
     },
     
     //Draws tiles to canvas context
@@ -143,8 +143,8 @@ Gam.Repositories.tileRepo = {
     },
 
     //Finds out on which tile cursor is placed curently and sets its Hovered flag
-    UpdateTilesHoveredFlag: function(transformation) {
-        var pointerTransformed = Gam.pointer.getTransformedPosition(transformation);
+    updateTilesHoveredFlag: function() {
+        var pointerTransformed = Gam.pointer.getTransformedPosition(this.transformation);
         var pX = pointerTransformed.x;
         var pY = pointerTransformed.y;
 
@@ -165,7 +165,7 @@ Gam.Repositories.tileRepo = {
 
     //Gets tile on which cursor resides
     getHoveredTile: function(transformation) {
-        this.UpdateTilesHoveredFlag(transformation);
+        this.updateTilesHoveredFlag(transformation);
         for (var i = 0; i < this.tiles.length; i++) {
             if (this.tiles[i].hovered) {
                 return this.tiles[i];

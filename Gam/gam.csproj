@@ -60,6 +60,7 @@
     <Content Include="img\canon.png" />
     <Content Include="img\harvester.png" />
     <Content Include="img\menu_Build.png" />
+    <Content Include="img\menu_Demolish.png" />
     <Content Include="img\shield.png" />
     <Content Include="index.html" />
     <Content Include="main.js" />

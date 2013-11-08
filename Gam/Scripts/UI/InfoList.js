@@ -2,7 +2,8 @@
 Gam.UI = Gam.UI || {};
 
 
-Gam.UI.InfoList = function (context, position, width, height) {
+Gam.UI.InfoList = function (messages, context, position, width, height) {
+    this.messages = messages;
     this.context = context;
     this.x = position.x;
     this.y = position.y;
@@ -15,7 +16,7 @@ Gam.UI.InfoList = function (context, position, width, height) {
     }
 
 
-    this.draw = function(messages) {
+    this.draw = function() {
 
         this.context.save();
 
@@ -37,12 +38,12 @@ Gam.UI.InfoList = function (context, position, width, height) {
         this.context.font = "12px Monospace";
 
         //take last 5 messages and draw it on the screen
-        var length = messages.length;
+        var length = this.messages.length;
         for (var i = length, j=1; i >= 0 && i > length-5; i--, j++) {
-            if (messages[i-1] === undefined) {
+            if (this.messages[i-1] === undefined) {
                 break;
             }
-            this.context.fillText(messages[i - 1], this.x + 6, this.y + j * 16);
+            this.context.fillText(this.messages[i - 1], this.x + 6, this.y + j * 16);
         }
 
         this.context.restore();

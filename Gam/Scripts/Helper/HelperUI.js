@@ -23,11 +23,11 @@ Gam.Helper.ShowCoordinates = function (context, worldParams, transformation) {
         context.fillText("out of bounds", x, y);
     }
     else {
-        var transformedPos = transformation.transform(lx, ly);
         context.fillText("Ort: [" + lx + "," + ly + "]", x, y);
-        context.fillText("Axo: [" + transformedPos.x + "," + transformedPos.y + "]", x, y+20);
-        context.fillText("Car: [" + cartX + "," + cartY + "]", x, y+40);
+        context.fillText("Car: [" + cartX + "," + cartY + "]", x, y + 20);
     }
+    context.fillText(Gam.pointer.hoveredBox, x, y + 40);
+
 };
 
 (function () {
