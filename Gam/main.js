@@ -37,14 +37,14 @@ Gam.hookEventHandlers = function (axoTransformation) {
     Gam.mainCtx.canvas.addEventListener("click", function () {
         var hoveredTile = Gam.Repositories.tileRepo.getHoveredTile(axoTransformation);
         if (hoveredTile != null) {     
-            var spriteData = Gam.Repositories.spriteRepo.get("harvester");
+            var spriteData = Gam.Repositories.spriteRepo.getSpriteData("harvester");
             hoveredTile.addBuilding(new Gam.Engine.Sprite(spriteData));
         }
     });
     Gam.mainCtx.canvas.oncontextmenu = function () {
         var hoveredTile = Gam.Repositories.tileRepo.getHoveredTile(axoTransformation);
         if (hoveredTile != null) {
-            var spriteData = Gam.Repositories.spriteRepo.get("shield");
+            var spriteData = Gam.Repositories.spriteRepo.getSpriteData("shield");
             hoveredTile.addBuilding(new Gam.Engine.Sprite(spriteData));
         }
         return false;
@@ -71,7 +71,15 @@ $().ready(function() {
     //populate sprite repository with game buildings
     Gam.Repositories.spriteRepo.add("harvester", "img/harvester.png", 450, 36, 50, [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 1, 1, 2, 1, 2, 1, 2, 3, 4, 5, 6, 7, 8, 1, 1, 1, 1, 1, 0, 0, 0, 0], 100, 1, Gam.BuildingTypeEnum.Unit);
     Gam.Repositories.spriteRepo.add("canon", "img/canon.png", 294, 40, 50, [0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 3, 2, 1, 0], 50, 1, Gam.BuildingTypeEnum.Unit);
-    Gam.Repositories.spriteRepo.add("shield", "img/shield.png", 150, 100, 150, [0], 0, 9, Gam.BuildingTypeEnum.Armour);
+    Gam.Repositories.spriteRepo.add("shield", "img/shield.png", 300, 101, 150, [0], 0, 9, Gam.BuildingTypeEnum.Armour);
+
+    Gam.Repositories.spriteRepo.add("cs", "img/cs.png", 50, 57, 50, [0], 0, 1, Gam.BuildingTypeEnum.Unit);
+
+
+    //add control station
+    var tile = Gam.Repositories.tileRepo.getTile(241);
+    var spriteData = Gam.Repositories.spriteRepo.getSpriteData("cs");
+    tile.addBuilding(new Gam.Engine.Sprite(spriteData));
 
     //populate image repository for using in menu and so on
     Gam.Repositories.imageRepo.add(Gam.MenuImagesEnum.menu_Build, "img/menu_Build.png", 60, 30, 30);

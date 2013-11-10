@@ -13,17 +13,20 @@ Gam.Engine.Tile = function(row, column, x, y, size) {
     this.unit = null;
     this.armour = null;
     this.occupied = false;
+    this.isControlStation = false;
 };
 
 Gam.Engine.Tile.prototype = {
-    addBuilding: function(sprite) {
+    addBuilding: function(sprite, isControlStation) {
         switch (sprite.spriteType) {
         case Gam.BuildingTypeEnum.Unit:
             if (this.unit === null && (this.occupied == false || this.armour != null)) {
-                    this.unit = sprite;
-                    this.occupied = true;
-            }
-            else {
+                this.unit = sprite;
+                this.occupied = true;
+                if (isControlStation) {
+                    this.isControlStation = true;
+                }
+            } else {
                 Gam.Engine.GameMessages.add(Gam.Localization.current.CannotAddBuilding);
             }
             break;
@@ -133,6 +136,9 @@ Gam.Repositories.tileRepo = {
 
         //draw sprites
         for (var i = 0; i < tiles.length; i++) {
+            if (tiles[i].unit != null && tiles[i].armour != null) {
+                tiles[i].armour.drawBase(context, transformation, this.worldParams.tileSize, tiles[i].x, tiles[i].y);
+            }
             if (tiles[i].unit != null) {
                 tiles[i].unit.draw(context, transformation, this.worldParams.tileSize, tiles[i].x, tiles[i].y);
             }
@@ -177,6 +183,10 @@ Gam.Repositories.tileRepo = {
             }
         }
         return null;
+    },
+    
+    getTile: function(index) {
+        return this.tiles[index];
     },
 
     checkIfOccupied: function(tilesPosition) {

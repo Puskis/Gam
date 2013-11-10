@@ -16,7 +16,7 @@ Gam.Repositories.spriteRepo = {
         this.objects.push(spriteData);
     },
 
-    get: function (id) {
+    getSpriteData: function (id) {
         for (var i = 0; i < this.objects.length; i++) {
             if (this.objects[i].id == id) {
                 return this.objects[i];
@@ -39,46 +39,68 @@ Gam.Repositories.spriteRepo = {
  };
 
  Gam.Engine.Sprite.prototype = {
-    update: function (dt) {
-        if (this.speed != 0) {
-            if (this.lastUpdated >= this.speed) {
-                this.lastUpdated = 0;
-                this.currentFrame++;
-                if (this.currentFrame >= this.frameSequence.length) {
-                    this.currentFrame = 0;
-                }
-            }
-            else {
-                this.lastUpdated += dt;
-            }
-        }
-    },
+     update: function(dt) {
+         if (this.speed != 0) {
+             if (this.lastUpdated >= this.speed) {
+                 this.lastUpdated = 0;
+                 this.currentFrame++;
+                 if (this.currentFrame >= this.frameSequence.length) {
+                     this.currentFrame = 0;
+                 }
+             } else {
+                 this.lastUpdated += dt;
+             }
+         }
+     },
 
-    draw: function (context, transformation, tileSize, x, y) {
-        var pos;
-        switch (this.spriteSizeInTiles)
-        {
-            case 9:
-                pos = transformation.transform(x - tileSize, y + 2*tileSize);
-                break;
-            case 1:
-            default:
-                pos = transformation.transform(x, y + tileSize);
-                break;
-        }
-        context.drawImage(
-            this.img,
-            this.frameSequence[this.currentFrame] * this.frameWidth,
-            0,
-            this.frameWidth,
-            this.img.height,
-            pos.x,
-            pos.y - this.img.height,
-            this.frameWidth,
-            this.img.height
-        );
-    }
-};
+     draw: function(context, transformation, tileSize, x, y) {
+         var pos;
+         switch (this.spriteSizeInTiles) {
+         case 9:
+             pos = transformation.transform(x - tileSize, y + 2 * tileSize);
+             break;
+         case 1:
+         default:
+             pos = transformation.transform(x, y + tileSize);
+             break;
+         }
+         context.drawImage(
+             this.img,
+             this.frameSequence[this.currentFrame] * this.frameWidth,
+             0,
+             this.frameWidth,
+             this.img.height,
+             pos.x,
+             pos.y - this.img.height,
+             this.frameWidth,
+             this.img.height
+         );
+     },
+     
+     drawBase: function(context, transformation, tileSize, x, y) {
+         var pos;
+         switch (this.spriteSizeInTiles) {
+         case 9:
+             pos = transformation.transform(x - tileSize, y + 2 * tileSize);
+             break;
+         case 1:
+         default:
+             pos = transformation.transform(x, y + tileSize);
+             break;
+         }
+         context.drawImage(
+             this.img,
+             this.frameSequence[this.currentFrame]+1 * this.frameWidth,
+             0,
+             this.frameWidth,
+             this.img.height,
+             pos.x,
+             pos.y - this.img.height,
+             this.frameWidth,
+             this.img.height
+         );
+     }
+ };
 
 Gam.Engine.SpriteData = function (id, img, frameWidth, frameSequence, speed, spriteSizeInTiles, spriteType) {
     this.id = id;

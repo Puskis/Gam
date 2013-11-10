@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="img\canon.png" />
+    <Content Include="img\cs.png" />
     <Content Include="img\harvester.png" />
     <Content Include="img\menu_Build.png" />
     <Content Include="img\menu_Demolish.png" />
