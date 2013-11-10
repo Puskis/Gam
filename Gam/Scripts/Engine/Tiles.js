@@ -143,7 +143,7 @@ Gam.Repositories.tileRepo = {
     },
 
     //Finds out on which tile cursor is placed curently and sets its Hovered flag
-    updateTilesHoveredFlag: function() {
+    setHoveredTilesFlag: function() {
         var pointerTransformed = Gam.pointer.getTransformedPosition(this.transformation);
         var pX = pointerTransformed.x;
         var pY = pointerTransformed.y;
@@ -157,15 +157,20 @@ Gam.Repositories.tileRepo = {
             tSize = this.tiles[i].size;
             if (pX > tX && pX < tX + tSize && pY > tY && pY < tY + tSize) {
                 this.tiles[i].hovered = true;
-            } else {
-                this.tiles[i].hovered = false;
-            }
+                return;
+            } 
+        }
+    },
+    
+    clearAllTilesHoveredFlag: function() {
+        for (var i = 0; i < this.tiles.length; i++) {
+            this.tiles[i].hovered = false;
         }
     },
 
     //Gets tile on which cursor resides
     getHoveredTile: function(transformation) {
-        this.updateTilesHoveredFlag(transformation);
+        this.setHoveredTilesFlag(transformation);
         for (var i = 0; i < this.tiles.length; i++) {
             if (this.tiles[i].hovered) {
                 return this.tiles[i];

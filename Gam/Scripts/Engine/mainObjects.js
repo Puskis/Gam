@@ -39,26 +39,37 @@ Gam.pointer = {
                
             }
             Gam.pointer.hoveredBox = "base";
-            Gam.Repositories.tileRepo.updateTilesHoveredFlag();
+            Gam.Repositories.tileRepo.setHoveredTilesFlag();
         },
 
-        register: function(control, boundRect, hoverHandler, clickHandler) {
+        register: function(control, boundRect, hoverHandler, clickHandler, clearHoverHandler) {
             var bound = {
                 control: control,
                 rect: boundRect,
 
                 hoverHandler: hoverHandler ,
-                clickHandler: clickHandler
+                clickHandler: clickHandler ,
+                clearHoverHandler: clearHoverHandler
             };
             this.bounds.push(bound);
         },
 
         callHoverHandler: function() {
+            this.clearAllHovers();
             this._handler("hoverHandler");
         },
 
         callClickHandler: function() {
             this._handler("clickHandler");
+        },
+        
+        clearAllHovers: function() {
+            for (var i = 0; i < this.bounds.length; i++) {
+                if (this.bounds[i].clearHoverHandler !== undefined) {
+                    this.bounds[i].clearHoverHandler();
+                }
+            }
+            Gam.Repositories.tileRepo.clearAllTilesHoveredFlag();
         }
     };
 })();

@@ -79,10 +79,14 @@ Gam.UI.MenuPanel = function (context, position, width, height) {
                 pointerPos.y < item.bottom) {
 
                 item.hovered = true;
+                return;
             }
-            else {
-                item.hovered = false;
-            }
+        }
+    };
+
+    this.clearHoverHandler = function() {
+        for (var i = 0; i < this.menuItems.length; i++) {
+            this.menuItems[i].hovered = false;
         }
     };
 };

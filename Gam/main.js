@@ -53,8 +53,8 @@ Gam.hookEventHandlers = function (axoTransformation) {
 };
 
 //Initialization
-$().ready(function () {
-    
+$().ready(function() {
+
     //setting game language
     Gam.Localization.current = Gam.Localization.english;
     Gam.Engine.GameMessages.add(Gam.Localization.current.GameStarted);
@@ -65,11 +65,11 @@ $().ready(function () {
     Gam.mainCtx = Gam.createCanvas(worldParams.width, worldParams.height);
 
     Gam.hookEventHandlers(axoTransformation);
-  
+
     Gam.Repositories.tileRepo.createTiles(worldParams, axoTransformation);
 
     //populate sprite repository with game buildings
-    Gam.Repositories.spriteRepo.add("harvester", "img/harvester.png", 450, 36, 50, [0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,1,1,2,1,1,2,1,2,1,2,3,4,5,6,7,8,1,1,1,1,1,0,0,0,0], 100, 1, Gam.BuildingTypeEnum.Unit);
+    Gam.Repositories.spriteRepo.add("harvester", "img/harvester.png", 450, 36, 50, [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 1, 1, 2, 1, 2, 1, 2, 3, 4, 5, 6, 7, 8, 1, 1, 1, 1, 1, 0, 0, 0, 0], 100, 1, Gam.BuildingTypeEnum.Unit);
     Gam.Repositories.spriteRepo.add("canon", "img/canon.png", 294, 40, 50, [0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 3, 2, 1, 0], 50, 1, Gam.BuildingTypeEnum.Unit);
     Gam.Repositories.spriteRepo.add("shield", "img/shield.png", 150, 100, 150, [0], 0, 9, Gam.BuildingTypeEnum.Armour);
 
@@ -91,7 +91,9 @@ $().ready(function () {
             right: ns.InfoList.x + ns.InfoList.width,
             bottom: ns.InfoList.y + ns.InfoList.height
         },
-        function () { }, function () { });
+        function() {
+        }, function() {
+        });
     Gam.BoundRegister.register("MenuPanel",
         {
             left: ns.MenuPanel.x,
@@ -99,10 +101,13 @@ $().ready(function () {
             right: ns.MenuPanel.x + ns.MenuPanel.width,
             bottom: ns.MenuPanel.y + ns.MenuPanel.height
         },
-        menuPanel.updateMenuItemHoveredFlag.bind(menuPanel), null);
-  
+        menuPanel.updateMenuItemHoveredFlag.bind(menuPanel),
+        null,
+        menuPanel.clearHoverHandler.bind(menuPanel)
+    );
+
     //start the main loop      
-    animFrame(function () { animationLoop(worldParams, axoTransformation, [infoList, menuPanel]); });
+    animFrame(function() { animationLoop(worldParams, axoTransformation, [infoList, menuPanel]); });
 });
 
 
@@ -113,7 +118,7 @@ Gam.mainLoop = function (worldParams, transformation, boxes) {
     Gam.time = Date.now();
 
     //set hovered object
-    Gam.BoundRegister.callHoverHandler();  //TODO needs clearHandle for all boxes!
+    Gam.BoundRegister.callHoverHandler();
 
     //update game logic
     Gam.Repositories.tileRepo.update(dt);
