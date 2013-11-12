@@ -56,7 +56,7 @@ Gam.UI.MenuPanel = function (menuItems, context, position, width, height) {
         for (var i = 0; i < this.menuItems.length; i++) {
             var img = this.menuItems[i].image;
             var xStart = 0;
-            if (this.menuItems[i].hovered === true) {
+            if (this.menuItems[i].hovered === true || this.menuItems[i].selected === true) {
                 xStart = img.frameWidth;
             }
             this.context.drawImage(
@@ -88,7 +88,11 @@ Gam.UI.MenuPanel = function (menuItems, context, position, width, height) {
         var pointerPos = { x: Gam.pointer.canvasX, y: Gam.pointer.canvasY };
         var mi = getItem(pointerPos);
         if (mi != null) {
+            for (var i = 0; i < this.menuItems.length; i++) {
+                menuItems[i].selected = false;
+            }
             mi.selected = true;
+            
         }
     };
 };

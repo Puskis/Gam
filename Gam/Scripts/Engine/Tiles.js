@@ -74,140 +74,142 @@ Gam.Engine.Tile.prototype = {
 };
 
 //Repository where all tiles are stored
-Gam.Repositories.tileRepo = {
-    tiles: [],
-    worldParams: null,
+Gam.Repositories.tileRepo = (function() {
+    var tiles = [];
+    var wParams = null;
+    var trans = null;
 
-    //Creates tile array by given worldParams
-    createTiles: function(worldParams, transformation) {
-        this.worldParams = worldParams;
-        this.transformation = transformation;
-        
-        for (var i = 0; i < worldParams.tilesVertical; i++) {
-            for (var j = 0; j < worldParams.tilesHorizontal; j++) {
-                var cX = worldParams.marginLeft + j * worldParams.tileSize;
-                var cY = worldParams.marginTop + i * worldParams.tileSize;
+    return {
+        //Creates tile array by given worldParams
+        createTiles: function(worldParams, transformation) {
+            wParams = worldParams;
+            trans = transformation;
 
-                this.tiles.push(new Gam.Engine.Tile(i, j, cX, cY, worldParams.tileSize));
-            }
-        }
-    },
-    
-    //Updates tiles
-    update: function(dt) {
-        for (var i = 0; i < Gam.Repositories.tileRepo.tiles.length; i++) {
-            if (Gam.Repositories.tileRepo.tiles[i].unit != null && Gam.Repositories.tileRepo.tiles[i].unit != undefined) {
-                Gam.Repositories.tileRepo.tiles[i].unit.update(dt);
-            }
-        }
-    },
-    
-    //Draws tiles to canvas context
-    draw: function(context, transformation) {
+            for (var i = 0; i < wParams.tilesVertical; i++) {
+                for (var j = 0; j < wParams.tilesHorizontal; j++) {
+                    var cX = wParams.marginLeft + j * wParams.tileSize;
+                    var cY = wParams.marginTop + i * wParams.tileSize;
 
-        context.save();
-
-        context.setTransform(transformation.scaleX,
-            transformation.skewX,
-            transformation.skewY,
-            transformation.scaleY,
-            transformation.posX,
-            transformation.posY);
-
-        context.beginPath();
-
-        //draw empty tiles
-        context.strokeStyle = worldStyles.worldSkewedTileStrokeStyle;
-        var tiles = this.tiles;
-        for (var i = 0; i < tiles.length; i++) {
-            context.rect(tiles[i].x, tiles[i].y, tiles[i].size, tiles[i].size);
-        }
-        context.stroke();
-
-        //draw border across hovered tile
-        var hoveredTile = this.getHoveredTile(transformation);
-        if (hoveredTile != undefined || hoveredTile != null) {
-            context.strokeStyle = worldStyles.worldSkewedTileStrokeStyleHover;
-            context.lineWidth = 3;
-            context.strokeRect(hoveredTile.x, hoveredTile.y, hoveredTile.size, hoveredTile.size);
-        }
-
-        context.restore();
-
-        //draw sprites
-        for (var i = 0; i < tiles.length; i++) {
-            if (tiles[i].armour != null && tiles[i].armour.spriteSizeInTiles > 1) {
-                tiles[i].armour.drawBase(context, transformation, this.worldParams.tileSize, tiles[i].x, tiles[i].y);
-            }
-            if (tiles[i].unit != null) {
-                tiles[i].unit.draw(context, transformation, this.worldParams.tileSize, tiles[i].x, tiles[i].y);
-            }
-            if (tiles[i].armour != null) {
-                tiles[i].armour.draw(context, transformation, this.worldParams.tileSize, tiles[i].x, tiles[i].y);
-            }
-        }
-    },
-
-    //Finds out on which tile cursor is placed curently and sets its Hovered flag
-    setHoveredTilesFlag: function() {
-        var pointerTransformed = Gam.pointer.getTransformedPosition(this.transformation);
-        var pX = pointerTransformed.x;
-        var pY = pointerTransformed.y;
-
-        var tX, tY;
-        var tSize;
-
-        for (var i = 0; i < this.tiles.length; i++) {
-            tX = this.tiles[i].x;
-            tY = this.tiles[i].y;
-            tSize = this.tiles[i].size;
-            if (pX > tX && pX < tX + tSize && pY > tY && pY < tY + tSize) {
-                this.tiles[i].hovered = true;
-                return;
-            } 
-        }
-    },
-    
-    clearAllTilesHoveredFlag: function() {
-        for (var i = 0; i < this.tiles.length; i++) {
-            this.tiles[i].hovered = false;
-        }
-    },
-
-    //Gets tile on which cursor resides
-    getHoveredTile: function(transformation) {
-        this.setHoveredTilesFlag(transformation);
-        for (var i = 0; i < this.tiles.length; i++) {
-            if (this.tiles[i].hovered) {
-                return this.tiles[i];
-            }
-        }
-        return null;
-    },
-    
-    getTile: function(index) {
-        return this.tiles[index];
-    },
-
-    checkIfOccupied: function(tilesPosition) {
-        var occupied = false;
-        for (var i = 0; i < tilesPosition.length; i++) {
-            var index = tilesPosition[i].row * this.worldParams.tilesHorizontal + tilesPosition[i].column;
-            if (index >= 0 && index <= Gam.Repositories.tileRepo.tiles.length && tilesPosition[i].column >=0 && tilesPosition[i].column < this.worldParams.tilesHorizontal) {
-                if (Gam.Repositories.tileRepo.tiles[index].unit != null || Gam.Repositories.tileRepo.tiles[index].armour != null || Gam.Repositories.tileRepo.tiles[index].occupied == true) {
-                    occupied = true;
+                    tiles.push(new Gam.Engine.Tile(i, j, cX, cY, wParams.tileSize));
                 }
-            } else {
-                throw "OutOfBoundsException";
             }
-        }      
-        return occupied;
-    },
+        },
     
-    setOccupied: function(tilesPosition) {    
-        for (var i = 0; i < tilesPosition.length; i++) {
-            var index = tilesPosition[i].row * this.worldParams.tilesHorizontal + tilesPosition[i].column;
-            Gam.Repositories.tileRepo.tiles[index].occupied = true;
+        //Updates tiles
+        update: function(dt) {
+            for (var i = 0; i < tiles.length; i++) {
+                if (tiles[i].unit != null && tiles[i].unit != undefined) {
+                    tiles[i].unit.update(dt);
+                }
+            }
+        },
+    
+        //Draws tiles to canvas context
+        draw: function(context) {
+
+            context.save();
+
+            context.setTransform(trans.scaleX,
+                trans.skewX,
+                trans.skewY,
+                trans.scaleY,
+                trans.posX,
+                trans.posY);
+
+            context.beginPath();
+
+            //draw empty tiles
+            context.strokeStyle = worldStyles.worldSkewedTileStrokeStyle;
+            for (var i = 0; i < tiles.length; i++) {
+                context.rect(tiles[i].x, tiles[i].y, tiles[i].size, tiles[i].size);
+            }
+            context.stroke();
+
+            //draw border across hovered tile
+            var hoveredTile = this.getHoveredTile();
+            if (hoveredTile != undefined || hoveredTile != null) {
+                context.strokeStyle = worldStyles.worldSkewedTileStrokeStyleHover;
+                context.lineWidth = 3;
+                context.strokeRect(hoveredTile.x, hoveredTile.y, hoveredTile.size, hoveredTile.size);
+            }
+
+            context.restore();
+
+            //draw sprites
+            for (var i = 0; i < tiles.length; i++) {
+                if (tiles[i].armour != null && tiles[i].armour.spriteSizeInTiles > 1) {
+                    tiles[i].armour.drawBase(context, trans, wParams.tileSize, tiles[i].x, tiles[i].y);
+                }
+                if (tiles[i].unit != null) {
+                    tiles[i].unit.draw(context, trans, wParams.tileSize, tiles[i].x, tiles[i].y);
+                }
+                if (tiles[i].armour != null) {
+                    tiles[i].armour.draw(context, trans, wParams.tileSize, tiles[i].x, tiles[i].y);
+                }
+            }
+        },
+
+        //Finds out on which tile cursor is placed curently and sets its Hovered flag
+        setHoveredTilesFlag: function() {
+            var pointerTransformed = Gam.pointer.getTransformedPosition(trans);
+            var pX = pointerTransformed.x;
+            var pY = pointerTransformed.y;
+
+            var tX, tY;
+            var tSize;
+
+            for (var i = 0; i < tiles.length; i++) {
+                tX = tiles[i].x;
+                tY = tiles[i].y;
+                tSize = tiles[i].size;
+                if (pX > tX && pX < tX + tSize && pY > tY && pY < tY + tSize) {
+                    tiles[i].hovered = true;
+                    return;
+                }
+            }
+        },
+
+        clearAllTilesHoveredFlag: function() {
+            for (var i = 0; i < tiles.length; i++) {
+                tiles[i].hovered = false;
+            }
+        },
+
+        //Gets tile on which cursor resides
+        getHoveredTile: function() {
+            //this.setHoveredTilesFlag();
+            for (var i = 0; i < tiles.length; i++) {
+                if (tiles[i].hovered) {
+                    return tiles[i];
+                }
+            }
+            return null;
+        },
+
+        getTile: function(index) {
+            return tiles[index];
+        },
+
+        checkIfOccupied: function(tilesPosition) {
+            var occupied = false;
+            for (var i = 0; i < tilesPosition.length; i++) {
+                var index = tilesPosition[i].row * wParams.tilesHorizontal + tilesPosition[i].column;
+                if (index >= 0 && index <= tiles.length && tilesPosition[i].column >= 0 && tilesPosition[i].column < wParams.tilesHorizontal) {
+                    if (tiles[index].unit != null || tiles[index].armour != null || tiles[index].occupied == true) {
+                        occupied = true;
+                    }
+                } else {
+                    throw "OutOfBoundsException";
+                }
+            }
+            return occupied;
+        },
+
+        setOccupied: function(tilesPosition) {
+            for (var i = 0; i < tilesPosition.length; i++) {
+                var index = tilesPosition[i].row * wParams.tilesHorizontal + tilesPosition[i].column;
+                tiles[index].occupied = true;
+            }
         }
-    }
-};
+    };
+})();

@@ -47,8 +47,17 @@ Gam.Engine = Gam.Engine || {};
         mi.selected = false;
         this.menu[menuBoxesEnum.mainMenu].push(mi);
         
-        //build menu items
-        this.menu[menuBoxesEnum.buildMenu] = new Array();
+        imageEnum = Gam.MenuImagesEnum.menu_Build;
+        mi = {};
+        mi.imageEnum = imageEnum;
+        mi.selected = false;
+        this.menu[menuBoxesEnum.mainMenu].push(mi);
+        
+        imageEnum = Gam.MenuImagesEnum.menu_Demolish;
+        mi = {};
+        mi.imageEnum = imageEnum;
+        mi.selected = false;
+        this.menu[menuBoxesEnum.mainMenu].push(mi);
         
     };
 

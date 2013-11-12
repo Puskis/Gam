@@ -22,8 +22,8 @@ Gam.BoundRegister = (function() {
     var handler = function(handlerFunc) {
         var pointerPos = { x: Gam.pointer.canvasX, y: Gam.pointer.canvasY };
         for (var i = 0; i < bounds.length; i++) {
-            if (bounds[i].transformation != null) {
-                pointerPos = bounds[i].transformBack({ x: Gam.pointer.canvasX, y: Gam.pointer.canvasY });
+            if (bounds[i].trans != null) {
+                pointerPos = bounds[i].trans.transformBack(Gam.pointer.canvasX,Gam.pointer.canvasY);
             }
             if (pointerPos.x > bounds[i].rect.left &&
                 pointerPos.x < bounds[i].rect.right &&
@@ -35,16 +35,16 @@ Gam.BoundRegister = (function() {
                 return;
             }
         }
-        Gam.pointer.hoveredBox = "base";
-        Gam.Repositories.tileRepo.setHoveredTilesFlag();
+        Gam.pointer.hoveredBox = "none";
     };
 
     //public members
     return {
-        register: function(control, boundRect, hoverHandler, clickHandler, clearHoverHandler) {
+        register: function(control, boundRect, transformation, hoverHandler, clickHandler, clearHoverHandler) {
             var bound = {
                 control: control,
                 rect: boundRect,
+                trans: transformation,
 
                 hoverHandler: hoverHandler,
                 clickHandler: clickHandler,
@@ -64,11 +64,10 @@ Gam.BoundRegister = (function() {
 
         clearAllHovers: function() {
             for (var i = 0; i < bounds.length; i++) {
-                if (bounds[i].clearHoverHandler !== undefined) {
+                if (bounds[i].clearHoverHandler !== undefined && bounds[i].clearHoverHandler !== null) {
                     bounds[i].clearHoverHandler();
                 }
             }
-            Gam.Repositories.tileRepo.clearAllTilesHoveredFlag();
         }
     };
 })();
@@ -82,10 +81,27 @@ Gam.BoxPositions = {
         width: 40,
         height: 200
     },
+    
     InfoList: {
         x: 20,
         y: 500,
         width: 1160,
         height: 90
     },
+    
+    Tiles: (function() {
+        var tileSize = 30;
+        var tileCountH = 25;
+        var tileCountV = 20;
+        return {
+            tileSize: tileSize,
+            tileCountH: tileCountH,
+            tileCountV: tileCountV,
+
+            x: 170,
+            y: 50,
+            width: tileSize * tileCountH,
+            height: tileSize * tileCountV
+        };
+    })()
 };
