@@ -2,36 +2,37 @@
 Gam.UI = Gam.UI || {};
 
 
-Gam.UI.MenuPanel = function (context, position, width, height) {
+Gam.UI.MenuPanel = function (menuItems, context, position, width, height) {
     this.context = context;
     this.x = position.x;
     this.y = position.y;
     this.width = width;
     this.height = height;
-    this.menuItems = [];
+    this.menuItems = menuItems;
+    
+    //add main menu items
+    for (var i = 0; i < menuItems.length; i++) {
+        var item = menuItems[i];
+        item.image = Gam.Repositories.imageRepo.get(item.imageEnum);
+        item.left = this.x + (this.width - item.image.frameWidth) / 2;
+        item.top = this.y + 10 + (item.image.height + 5) * i;
+        item.right = item.left + item.image.frameWidth;
+        item.bottom = item.top + item.image.height;
+    }
+    
+    function getItem(pointerPos) {
+        for (var i = 0; i < menuItems.length; i++) {
+            var mi = menuItems[i];
+            if (pointerPos.x > mi.left &&
+                pointerPos.x < mi.right &&
+                pointerPos.y > mi.top &&
+                pointerPos.y < mi.bottom) {
 
-        //add "build" menu item
-        var image = Gam.Repositories.imageRepo.get(Gam.MenuImagesEnum.menu_Build);
-        var mi = {};
-        mi.left = this.x + (this.width - image.frameWidth) / 2;
-        mi.top = this.y + 10;
-        mi.right = mi.left + image.frameWidth;
-        mi.bottom = mi.top + image.height;
-        mi.image = image;
-        mi.hovered = false;
-        this.menuItems.push(mi);
-
-        //add "demolish" menu item
-        image = Gam.Repositories.imageRepo.get(Gam.MenuImagesEnum.menu_Demolish);
-        mi = {};
-        mi.left = this.x + (this.width - image.frameWidth) / 2;
-        mi.top = (this.y + 12)*2;
-        mi.right = mi.left + image.frameWidth;
-        mi.bottom = mi.top + image.height;
-        mi.image = image;
-        mi.hovered = false;
-        this.menuItems.push(mi);
-
+                return mi;
+            }
+        }
+        return null;
+    }
 
     this.draw = function () {
 
@@ -71,22 +72,23 @@ Gam.UI.MenuPanel = function (context, position, width, height) {
 
     this.updateMenuItemHoveredFlag = function() {
         var pointerPos = { x: Gam.pointer.canvasX, y: Gam.pointer.canvasY };
-        for (var i = 0; i < this.menuItems.length; i++) {
-            var item = this.menuItems[i];
-            if (pointerPos.x > item.left &&
-                pointerPos.x < item.right &&
-                pointerPos.y > item.top &&
-                pointerPos.y < item.bottom) {
-
-                item.hovered = true;
-                return;
-            }
+        var mi = getItem(pointerPos);
+        if (mi != null) {
+            mi.hovered = true;
         }
     };
 
     this.clearHoverHandler = function() {
         for (var i = 0; i < this.menuItems.length; i++) {
             this.menuItems[i].hovered = false;
+        }
+    };
+
+    this.clickHandler = function() {
+        var pointerPos = { x: Gam.pointer.canvasX, y: Gam.pointer.canvasY };
+        var mi = getItem(pointerPos);
+        if (mi != null) {
+            mi.selected = true;
         }
     };
 };

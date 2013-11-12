@@ -10,6 +10,7 @@
 /// <reference path="Engine/Tiles.js" />
 /// <reference path="UI/InfoList.js" />
 /// <reference path="Localization.js" />
+/// <reference path="Engine/Menu.js" />
 /// <reference path="Engine/GameMessages.js" />
 /// <reference path="UI/ui.js" />
 /// <reference path="UI/MenuPanel.js" />

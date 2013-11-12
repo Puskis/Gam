@@ -15,58 +15,57 @@ Gam.pointer = {
     }
 };
 
-(function () {
-   
     //Used for registering canvas bounding boxes for different modules (menu panel, tile map, etc)
-    Gam.BoundRegister = {
-        bounds: [],
+Gam.BoundRegister = (function() {
+    var bounds = [];
 
-        _handler: function(handlerFunc) {
-            var pointerPos = { x: Gam.pointer.canvasX, y: Gam.pointer.canvasY };
-            for (var i = 0; i < this.bounds.length; i++) {
-                if (this.bounds[i].transformation != null) {
-                    pointerPos = this.bounds[i].transformBack({ x: Gam.pointer.canvasX, y: Gam.pointer.canvasY });
-                }
-                if (pointerPos.x > this.bounds[i].rect.left &&
-                    pointerPos.x < this.bounds[i].rect.right &&
-                    pointerPos.y > this.bounds[i].rect.top &&
-                    pointerPos.y < this.bounds[i].rect.bottom) {
-
-                    this.bounds[i][handlerFunc]();
-                    Gam.pointer.hoveredBox = this.bounds[i].control;
-                    return;
-                }
-               
+    var handler = function(handlerFunc) {
+        var pointerPos = { x: Gam.pointer.canvasX, y: Gam.pointer.canvasY };
+        for (var i = 0; i < bounds.length; i++) {
+            if (bounds[i].transformation != null) {
+                pointerPos = bounds[i].transformBack({ x: Gam.pointer.canvasX, y: Gam.pointer.canvasY });
             }
-            Gam.pointer.hoveredBox = "base";
-            Gam.Repositories.tileRepo.setHoveredTilesFlag();
-        },
+            if (pointerPos.x > bounds[i].rect.left &&
+                pointerPos.x < bounds[i].rect.right &&
+                pointerPos.y > bounds[i].rect.top &&
+                pointerPos.y < bounds[i].rect.bottom) {
 
+                bounds[i][handlerFunc]();
+                Gam.pointer.hoveredBox = bounds[i].control;
+                return;
+            }
+        }
+        Gam.pointer.hoveredBox = "base";
+        Gam.Repositories.tileRepo.setHoveredTilesFlag();
+    };
+
+    //public members
+    return {
         register: function(control, boundRect, hoverHandler, clickHandler, clearHoverHandler) {
             var bound = {
                 control: control,
                 rect: boundRect,
 
-                hoverHandler: hoverHandler ,
-                clickHandler: clickHandler ,
+                hoverHandler: hoverHandler,
+                clickHandler: clickHandler,
                 clearHoverHandler: clearHoverHandler
             };
-            this.bounds.push(bound);
+            bounds.push(bound);
         },
 
         callHoverHandler: function() {
             this.clearAllHovers();
-            this._handler("hoverHandler");
+            handler("hoverHandler");
         },
 
         callClickHandler: function() {
-            this._handler("clickHandler");
+            handler("clickHandler");
         },
-        
+
         clearAllHovers: function() {
-            for (var i = 0; i < this.bounds.length; i++) {
-                if (this.bounds[i].clearHoverHandler !== undefined) {
-                    this.bounds[i].clearHoverHandler();
+            for (var i = 0; i < bounds.length; i++) {
+                if (bounds[i].clearHoverHandler !== undefined) {
+                    bounds[i].clearHoverHandler();
                 }
             }
             Gam.Repositories.tileRepo.clearAllTilesHoveredFlag();

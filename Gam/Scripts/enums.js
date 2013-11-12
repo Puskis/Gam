@@ -9,3 +9,8 @@ Gam.MenuImagesEnum = {
     menu_Build: "menu_Build",
     menu_Demolish: "menu_Demolish"
 }
+
+Gam.MenuBoxesEnum = {
+    mainMenu: "mainMenu",
+    buildMenu: "buildMenu"
+}

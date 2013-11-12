@@ -33,8 +33,10 @@ if (animFrame !== null) {
 }
 
 Gam.hookEventHandlers = function (axoTransformation) {
- Gam.mainCtx.canvas.addEventListener("mousemove", function (event) { Gam.pointer.mouseLocationReader(event); });
+    Gam.mainCtx.canvas.addEventListener("mousemove", function (event) { Gam.pointer.mouseLocationReader(event); });
+
     Gam.mainCtx.canvas.addEventListener("click", function () {
+        //Gam.BoundRegister.callClickHandler();
         var hoveredTile = Gam.Repositories.tileRepo.getHoveredTile(axoTransformation);
         if (hoveredTile != null) {     
             var spriteData = Gam.Repositories.spriteRepo.getSpriteData("harvester");
@@ -59,22 +61,19 @@ $().ready(function() {
     Gam.Localization.current = Gam.Localization.english;
     Gam.Engine.GameMessages.add(Gam.Localization.current.GameStarted);
 
+    //setting main game parameters
     var worldParams = new Gam.World.WorldParams(1200, 600, 20, 25, 30, 170, 50);
     var axoTransformation = new Gam.World.Transformation(1, 0, -0.7, 0.6, 300, 100);
 
+    //creating world
     Gam.mainCtx = Gam.createCanvas(worldParams.width, worldParams.height);
-
-    Gam.hookEventHandlers(axoTransformation);
-
     Gam.Repositories.tileRepo.createTiles(worldParams, axoTransformation);
 
     //populate sprite repository with game buildings
     Gam.Repositories.spriteRepo.add("harvester", "img/harvester.png", 450, 36, 50, [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 1, 1, 2, 1, 2, 1, 2, 3, 4, 5, 6, 7, 8, 1, 1, 1, 1, 1, 0, 0, 0, 0], 100, 1, Gam.BuildingTypeEnum.Unit);
     Gam.Repositories.spriteRepo.add("canon", "img/canon.png", 294, 40, 50, [0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 3, 2, 1, 0], 50, 1, Gam.BuildingTypeEnum.Unit);
     Gam.Repositories.spriteRepo.add("shield", "img/shield.png", 150, 101, 150, [0], 0, 9, Gam.BuildingTypeEnum.Armour);
-
     Gam.Repositories.spriteRepo.add("cs", "img/cs.png", 50, 57, 50, [0], 0, 1, Gam.BuildingTypeEnum.Unit);
-
 
     //add control station
     var tile = Gam.Repositories.tileRepo.getTile(241);
@@ -85,9 +84,11 @@ $().ready(function() {
     Gam.Repositories.imageRepo.add(Gam.MenuImagesEnum.menu_Build, "img/menu_Build.png", 60, 30, 30);
     Gam.Repositories.imageRepo.add(Gam.MenuImagesEnum.menu_Demolish, "img/menu_Demolish.png", 60, 30, 30);
 
+    //create menu
+    var menu = new Gam.Engine.Menu();
     //Create boxes
     var infoList = new Gam.UI.InfoList(Gam.Engine.GameMessages.messages, Gam.mainCtx, { x: Gam.BoxPositions.InfoList.x, y: Gam.BoxPositions.InfoList.y }, Gam.BoxPositions.InfoList.width, Gam.BoxPositions.InfoList.height);
-    var menuPanel = new Gam.UI.MenuPanel(Gam.mainCtx, { x: Gam.BoxPositions.MenuPanel.x, y: Gam.BoxPositions.MenuPanel.y }, Gam.BoxPositions.MenuPanel.width, Gam.BoxPositions.MenuPanel.height);
+    var menuPanel = new Gam.UI.MenuPanel(menu.getMenuBox(Gam.MenuBoxesEnum.mainMenu), Gam.mainCtx, { x: Gam.BoxPositions.MenuPanel.x, y: Gam.BoxPositions.MenuPanel.y }, Gam.BoxPositions.MenuPanel.width, Gam.BoxPositions.MenuPanel.height);
 
     //register all boxes (all containments, like menu, infolist and so on). Tiles are considered base containment and do not need registration
     //register position is important in multilayered boxing! first registered box is checked first, if it is within boundaries other boxes are no more checked
@@ -110,9 +111,11 @@ $().ready(function() {
             bottom: ns.MenuPanel.y + ns.MenuPanel.height
         },
         menuPanel.updateMenuItemHoveredFlag.bind(menuPanel),
-        null,
+        menuPanel.clickHandler.bind(menuPanel),
         menuPanel.clearHoverHandler.bind(menuPanel)
     );
+
+    Gam.hookEventHandlers(axoTransformation);
 
     //start the main loop      
     animFrame(function() { animationLoop(worldParams, axoTransformation, [infoList, menuPanel]); });

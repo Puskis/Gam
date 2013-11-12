@@ -66,6 +66,7 @@
     <Content Include="index.html" />
     <Content Include="main.js" />
     <Content Include="Scripts\Engine\GameMessages.js" />
+    <Content Include="Scripts\Engine\Menu.js" />
     <Content Include="Scripts\enums.js" />
     <Content Include="Scripts\Helper\HelperUI.js" />
     <Content Include="Scripts\Engine\mainObjects.js" />
