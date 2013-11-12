@@ -53,44 +53,30 @@ Gam.Repositories.spriteRepo = {
          }
      },
 
-     draw: function(context, transformation, tileSize, x, y) {
-         var pos;
-         switch (this.spriteSizeInTiles) {
-         case 9:
-             pos = transformation.transform(x - tileSize, y + 2 * tileSize);
-             break;
-         case 1:
-         default:
-             pos = transformation.transform(x, y + tileSize);
-             break;
-         }
-         context.drawImage(
-             this.img,
-             this.frameSequence[this.currentFrame] * this.frameWidth,
-             0,
-             this.frameWidth,
-             this.img.height,
-             pos.x,
-             pos.y - this.img.height,
-             this.frameWidth,
-             this.img.height
-         );
+     draw: function (context, transformation, tileSize, x, y) {
+         var currentFrame = this.frameSequence[this.currentFrame];
+         this._drawSprite(context, transformation, tileSize, x, y, currentFrame);
      },
      
      drawBase: function(context, transformation, tileSize, x, y) {
+         var currentFramePlusOne = this.frameSequence[this.currentFrame] + 1;
+         this._drawSprite(context, transformation, tileSize, x, y, currentFramePlusOne);
+     },
+     
+     _drawSprite: function (context, transformation, tileSize, x, y, frame) {
          var pos;
          switch (this.spriteSizeInTiles) {
-         case 9:
-             pos = transformation.transform(x - tileSize, y + 2 * tileSize);
-             break;
-         case 1:
-         default:
-             pos = transformation.transform(x, y + tileSize);
-             break;
+             case 9:
+                 pos = transformation.transform(x - tileSize, y + 2 * tileSize);
+                 break;
+             case 1:
+             default:
+                 pos = transformation.transform(x, y + tileSize);
+                 break;
          }
          context.drawImage(
              this.img,
-             this.frameSequence[this.currentFrame]+1 * this.frameWidth,
+             frame * this.frameWidth,
              0,
              this.frameWidth,
              this.img.height,

@@ -136,7 +136,7 @@ Gam.Repositories.tileRepo = {
 
         //draw sprites
         for (var i = 0; i < tiles.length; i++) {
-            if (tiles[i].unit != null && tiles[i].armour != null) {
+            if (tiles[i].armour != null && tiles[i].armour.spriteSizeInTiles > 1) {
                 tiles[i].armour.drawBase(context, transformation, this.worldParams.tileSize, tiles[i].x, tiles[i].y);
             }
             if (tiles[i].unit != null) {
