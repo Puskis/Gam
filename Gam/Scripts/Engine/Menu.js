@@ -1,67 +1,43 @@
 ﻿Gam = Gam || {};
 Gam.Engine = Gam.Engine || {};
 
-//; (function () {
 
-//    var myPrivate = 5;
+Gam.Engine.Menu = function () {
+    //dependencies
+    var menuBoxesEnum = Gam.MenuBoxesEnum;
 
-//    var privateFunc = function() {
-//        return myPrivate * myPrivate;
-//    };
+    this.menu = [];
 
-//    Gam.Engine.Menu = {
-//        menu: [],
-//        getMenuBox: function (id) {
-//            console.log(myPrivate);
-//            return this.menu[id];
-//        },
-//        exposed: privateFunc
-//    };
+    //Main menu panel items
+    this.menu[menuBoxesEnum.mainMenu] = new Array();
 
-//})();
+    var imageEnum = Gam.MenuImagesEnum.menu_Build;
+    var mi = {};
+    mi.imageEnum = imageEnum,
+    mi.selected = false;
+    this.menu[menuBoxesEnum.mainMenu].push(mi);
 
-//Gam.Engine.Menu.getMenuBox(5);
+    imageEnum = Gam.MenuImagesEnum.menu_Demolish;
+    mi = {};
+    mi.imageEnum = imageEnum;
+    mi.selected = false;
+    this.menu[menuBoxesEnum.mainMenu].push(mi);
 
-//var func = Gam.Engine.Menu.getMenuBox;
-//// wrong
-//func(5);
+    imageEnum = Gam.MenuImagesEnum.menu_Build;
+    mi = {};
+    mi.imageEnum = imageEnum;
+    mi.selected = false;
+    this.menu[menuBoxesEnum.mainMenu].push(mi);
 
-    Gam.Engine.Menu = function() {
-        //dependencies
-        var menuBoxesEnum = Gam.MenuBoxesEnum;
+    imageEnum = Gam.MenuImagesEnum.menu_Demolish;
+    mi = {};
+    mi.imageEnum = imageEnum;
+    mi.selected = false;
+    this.menu[menuBoxesEnum.mainMenu].push(mi);
 
-        this.menu = [];
-        
-        //Main menu panel items
-        this.menu[menuBoxesEnum.mainMenu] = new Array();
+};
 
-        var imageEnum = Gam.MenuImagesEnum.menu_Build;
-        var mi = {};
-        mi.imageEnum = imageEnum,
-        mi.selected = false;
-        this.menu[menuBoxesEnum.mainMenu].push(mi);
-
-        imageEnum = Gam.MenuImagesEnum.menu_Demolish;
-        mi = {};
-        mi.imageEnum = imageEnum;
-        mi.selected = false;
-        this.menu[menuBoxesEnum.mainMenu].push(mi);
-        
-        imageEnum = Gam.MenuImagesEnum.menu_Build;
-        mi = {};
-        mi.imageEnum = imageEnum;
-        mi.selected = false;
-        this.menu[menuBoxesEnum.mainMenu].push(mi);
-        
-        imageEnum = Gam.MenuImagesEnum.menu_Demolish;
-        mi = {};
-        mi.imageEnum = imageEnum;
-        mi.selected = false;
-        this.menu[menuBoxesEnum.mainMenu].push(mi);
-        
-    };
-
-    Gam.Engine.Menu.prototype.getMenuBox = function (id) {
-        return this.menu[id];
-    };
+Gam.Engine.Menu.prototype.getMenuBox = function (id) {
+    return this.menu[id];
+};
 

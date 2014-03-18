@@ -1,4 +1,5 @@
 ﻿/// <reference path="jquery/jquery-2.0.3.js" />
+/// <reference path="jquery/jquery-2.0.3.intellisense.js" />
 /// <reference path="../main.js" />
 /// <reference path="../styles.js" />
 /// <reference path="Engine/engine.js" />
