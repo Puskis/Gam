@@ -34,7 +34,6 @@ Gam.UI.InfoList = function (messages, context, position, width, height) {
         this.context.arcTo(this.x, this.y, this.x + 10, this.y, 10);
         this.context.stroke();
 
-        this.context.lineWidth = 1;
         this.context.font = "12px Monospace";
 
         //take last 5 messages and draw it on the screen

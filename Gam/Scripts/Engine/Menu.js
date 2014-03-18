@@ -5,6 +5,7 @@ Gam.Engine = Gam.Engine || {};
 Gam.Engine.Menu = function () {
     //dependencies
     var menuBoxesEnum = Gam.MenuBoxesEnum;
+    var balance = Gam.Engine.GameBalance;
 
     this.menu = [];
 
@@ -35,13 +36,19 @@ Gam.Engine.Menu = function () {
     mi.selected = false;
     this.menu[menuBoxesEnum.mainMenu].push(mi);
     
-    //build submenu items
+
+    //Build submenu panel items
     this.menu[menuBoxesEnum.buildMenu] = new Array();
 
     var subImageEnum = Gam.MenuImagesEnum.menu_Demolish;
     var submi = {};
     submi.imageEnum = subImageEnum;
     submi.selected = false;
+    submi.details = {
+        Name: balance.Mine.Name,
+        Cost: balance.Mine.Cost,
+        Income: balance.Mine.Income
+    };
     submi.subMenu = [];
     this.menu[menuBoxesEnum.buildMenu].push(submi);
 
@@ -49,6 +56,11 @@ Gam.Engine.Menu = function () {
     submi = {};
     submi.imageEnum = subImageEnum;
     submi.selected = false;
+    submi.details = {
+        Name: "Standard mine",
+        Cost: balance.Mine.Cost,
+        Income: balance.Mine.Income
+    };
     submi.subMenu = [];
     this.menu[menuBoxesEnum.buildMenu].push(submi);
 
@@ -56,6 +68,11 @@ Gam.Engine.Menu = function () {
     submi = {};
     submi.imageEnum = subImageEnum;
     submi.selected = false;
+    submi.details = {
+        Name: "Big mine",
+        Cost: 300,
+        Income: 50
+    };
     submi.subMenu = [];
     this.menu[menuBoxesEnum.buildMenu].push(submi);
 
@@ -63,6 +80,11 @@ Gam.Engine.Menu = function () {
     submi = {};
     submi.imageEnum = subImageEnum;
     submi.selected = false;
+    submi.details = {
+        Name: "Not a mine",
+        Cost: 50,
+        Income: 0
+    };
     submi.subMenu = [];
     this.menu[menuBoxesEnum.buildMenu].push(submi);
 
@@ -70,6 +92,11 @@ Gam.Engine.Menu = function () {
     submi = {};
     submi.imageEnum = subImageEnum;
     submi.selected = false;
+    submi.details = {
+        Name: balance.Mine.Name,
+        Cost: balance.Mine.Cost,
+        Income: balance.Mine.Income
+    };
     submi.subMenu = [];
     this.menu[menuBoxesEnum.buildMenu].push(submi);
 

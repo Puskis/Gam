@@ -89,12 +89,12 @@ $().ready(function() {
     //Create boxes
     var ns = Gam.BoxPositions;
     var infoList = new Gam.UI.InfoList(Gam.Engine.GameMessages.messages, Gam.mainCtx, { x: Gam.BoxPositions.InfoList.x, y: Gam.BoxPositions.InfoList.y }, Gam.BoxPositions.InfoList.width, Gam.BoxPositions.InfoList.height);
-    var menuPanel = new Gam.UI.MenuPanel(menu.getMenuBox(Gam.MenuBoxesEnum.mainMenu), Gam.mainCtx, { x: ns.MenuPanel.x, y: ns.MenuPanel.y }, ns.MenuPanel.width, ns.MenuPanel.height);
-    var buildPanel = new Gam.UI.MenuPanel(menu.getMenuBox(Gam.MenuBoxesEnum.buildMenu), Gam.mainCtx, { x: ns.BuildPanel.x, y: ns.BuildPanel.y }, ns.BuildPanel.width, ns.BuildPanel.height);
+    var mainPanel = new Gam.UI.IconMenuPanel(menu.getMenuBox(Gam.MenuBoxesEnum.mainMenu), Gam.mainCtx, { x: ns.MainPanel.x, y: ns.MainPanel.y }, ns.MainPanel.width, ns.MainPanel.height);
+    var buildPanel = new Gam.UI.IconMenuPanel(menu.getMenuBox(Gam.MenuBoxesEnum.buildMenu), Gam.mainCtx, { x: ns.BuildPanel.x, y: ns.BuildPanel.y }, ns.BuildPanel.width, ns.BuildPanel.height);
+    var detailsPanel = new Gam.UI.DetailsPanel([menu.getMenuBox(Gam.MenuBoxesEnum.buildMenu)], Gam.mainCtx, { x: ns.DetailsPanel.x, y: ns.DetailsPanel.y }, ns.DetailsPanel.width, ns.DetailsPanel.height);
 
     //register all boxes (all containments, like menu, infolist, tiles and so on)
-    //register position is important in multilayered boxing! first registered box is checked first, if it is within boundaries other boxes are no more checked
-    
+    //register position is important in multilayered boxing! first registered box is checked first, if it is within boundaries other boxes are no more checked  
     Gam.BoundRegister.register("InfoList",
         {
             left: ns.InfoList.x,
@@ -103,20 +103,31 @@ $().ready(function() {
             bottom: ns.InfoList.y + ns.InfoList.height
         },
         null,
-        function() {
-        }, function() {
-        });
-    Gam.BoundRegister.register("MenuPanel",
+        function () { },
+        function () { }
+    );
+    Gam.BoundRegister.register("DetailsPanel",
         {
-            left: ns.MenuPanel.x,
-            top: ns.MenuPanel.y,
-            right: ns.MenuPanel.x + ns.MenuPanel.width,
-            bottom: ns.MenuPanel.y + ns.MenuPanel.height
+            left: ns.DetailsPanel.x,
+            top: ns.DetailsPanel.y,
+            right: ns.DetailsPanel.x + ns.DetailsPanel.width,
+            bottom: ns.DetailsPanel.y + ns.DetailsPanel.height
         },
         null,
-        menuPanel.updateMenuItemHoveredFlag.bind(menuPanel),
-        menuPanel.clickHandler.bind(menuPanel),
-        menuPanel.clearHoverHandler.bind(menuPanel)
+        function () { },
+        function () { }
+    );
+    Gam.BoundRegister.register("MainPanel",
+        {
+            left: ns.MainPanel.x,
+            top: ns.MainPanel.y,
+            right: ns.MainPanel.x + ns.MainPanel.width,
+            bottom: ns.MainPanel.y + ns.MainPanel.height
+        },
+        null,
+        mainPanel.updateMenuItemHoveredFlag.bind(mainPanel),
+        mainPanel.clickHandler.bind(mainPanel),
+        mainPanel.clearHoverHandler.bind(mainPanel)
     );
     Gam.BoundRegister.register("BuildPanel",
         {
@@ -153,7 +164,7 @@ $().ready(function() {
     Gam.hookEventHandlers(axoTransformation);
 
     //start the main loop      
-    animFrame(function() { animationLoop(worldParams, axoTransformation, [infoList, menuPanel, buildPanel]); });
+    animFrame(function() { animationLoop(worldParams, axoTransformation, [infoList, mainPanel, buildPanel, detailsPanel]); });
 });
 
 

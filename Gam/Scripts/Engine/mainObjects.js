@@ -75,7 +75,7 @@ Gam.BoundRegister = (function() {
 //Used for positioning all boxes around the canvas
 //Tiles are not included. They take all the window and are processed last if no other bounding box takes control
 Gam.BoxPositions = {
-    MenuPanel: {
+    MainPanel: {
         x: 20,
         y: 20,
         width: 40,
@@ -87,6 +87,13 @@ Gam.BoxPositions = {
         y: 20,
         width: 110,
         height: 200
+    },
+
+    DetailsPanel: {
+        x: 200,
+        y: 20,
+        width: 180,
+        height: 80
     },
     
     InfoList: {
