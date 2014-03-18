@@ -10,14 +10,25 @@ Gam.UI.MenuPanel = function (menuItems, context, position, width, height) {
     this.height = height;
     this.menuItems = menuItems;
     
-    //add main menu items
+    //add menu items
+    var recalculatedX = this.x;
+    var margin = 5;
+    var row = 0;
+
     for (var i = 0; i < menuItems.length; i++) {
         var item = menuItems[i];
         item.image = Gam.Repositories.imageRepo.get(item.imageEnum);
-        item.left = this.x + (this.width - item.image.frameWidth) / 2;
-        item.top = this.y + 10 + (item.image.height + 5) * i;
+
+        if (this.width + this.x < recalculatedX + item.image.frameWidth + margin * 2) {
+            row++;
+            recalculatedX = this.x;
+        }
+        item.left = recalculatedX + margin;
+        item.top = this.y + 10 + (item.image.height + margin) * row;
         item.right = item.left + item.image.frameWidth;
         item.bottom = item.top + item.image.height;
+
+        recalculatedX = item.right;
     }
     
     function getItem(pointerPos) {

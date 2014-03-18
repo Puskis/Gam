@@ -87,12 +87,14 @@ $().ready(function() {
     //create menu
     var menu = new Gam.Engine.Menu();
     //Create boxes
+    var ns = Gam.BoxPositions;
     var infoList = new Gam.UI.InfoList(Gam.Engine.GameMessages.messages, Gam.mainCtx, { x: Gam.BoxPositions.InfoList.x, y: Gam.BoxPositions.InfoList.y }, Gam.BoxPositions.InfoList.width, Gam.BoxPositions.InfoList.height);
-    var menuPanel = new Gam.UI.MenuPanel(menu.getMenuBox(Gam.MenuBoxesEnum.mainMenu), Gam.mainCtx, { x: Gam.BoxPositions.MenuPanel.x, y: Gam.BoxPositions.MenuPanel.y }, Gam.BoxPositions.MenuPanel.width, Gam.BoxPositions.MenuPanel.height);
+    var menuPanel = new Gam.UI.MenuPanel(menu.getMenuBox(Gam.MenuBoxesEnum.mainMenu), Gam.mainCtx, { x: ns.MenuPanel.x, y: ns.MenuPanel.y }, ns.MenuPanel.width, ns.MenuPanel.height);
+    var buildPanel = new Gam.UI.MenuPanel(menu.getMenuBox(Gam.MenuBoxesEnum.buildMenu), Gam.mainCtx, { x: ns.BuildPanel.x, y: ns.BuildPanel.y }, ns.BuildPanel.width, ns.BuildPanel.height);
 
     //register all boxes (all containments, like menu, infolist, tiles and so on)
     //register position is important in multilayered boxing! first registered box is checked first, if it is within boundaries other boxes are no more checked
-    var ns = Gam.BoxPositions;
+    
     Gam.BoundRegister.register("InfoList",
         {
             left: ns.InfoList.x,
@@ -115,6 +117,18 @@ $().ready(function() {
         menuPanel.updateMenuItemHoveredFlag.bind(menuPanel),
         menuPanel.clickHandler.bind(menuPanel),
         menuPanel.clearHoverHandler.bind(menuPanel)
+    );
+    Gam.BoundRegister.register("BuildPanel",
+        {
+            left: ns.BuildPanel.x,
+            top: ns.BuildPanel.y,
+            right: ns.BuildPanel.x + ns.BuildPanel.width,
+            bottom: ns.BuildPanel.y + ns.BuildPanel.height
+        },
+        null,
+        buildPanel.updateMenuItemHoveredFlag.bind(buildPanel),
+        buildPanel.clickHandler.bind(buildPanel),
+        buildPanel.clearHoverHandler.bind(buildPanel)
     );
     
     Gam.BoundRegister.register("Tiles",
@@ -139,7 +153,7 @@ $().ready(function() {
     Gam.hookEventHandlers(axoTransformation);
 
     //start the main loop      
-    animFrame(function() { animationLoop(worldParams, axoTransformation, [infoList, menuPanel]); });
+    animFrame(function() { animationLoop(worldParams, axoTransformation, [infoList, menuPanel, buildPanel]); });
 });
 
 

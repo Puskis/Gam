@@ -73,7 +73,6 @@
     <Content Include="Scripts\Engine\Sprites.js" />
     <Content Include="Scripts\Engine\Tiles.js" />
     <Content Include="Scripts\Localization.js" />
-    <Content Include="Scripts\UI\BuildPanel.js" />
     <Content Include="Scripts\UI\ui.js" />
     <Content Include="Scripts\UI\InfoList.js" />
     <Content Include="Scripts\UI\MenuPanel.js" />

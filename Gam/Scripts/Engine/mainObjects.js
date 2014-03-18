@@ -81,6 +81,13 @@ Gam.BoxPositions = {
         width: 40,
         height: 200
     },
+
+    BuildPanel: {
+        x: 70,
+        y: 20,
+        width: 110,
+        height: 200
+    },
     
     InfoList: {
         x: 20,
